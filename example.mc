@@ -1,5 +1,10 @@
 string s2;
-
+string cat3 (string a) {
+  string b;
+  b = concat(a,a);
+  b = concat(b,a);
+  return b;
+}
 int main()
 { 
   string s;
@@ -13,6 +18,7 @@ int main()
   st = concat(t,s);
   st = concat(t,st);
   prints(st);
+  prints(cat3(s));
   printbig(100);
   prints(s2);
   return 0;
