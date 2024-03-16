@@ -48,12 +48,7 @@ let translate (globals, functions) =
     let global_var m (t, n) = 
       let init = match t with
           A.Float -> L.const_float (ltype_of_typ t) 0.0
-        | A.String ->
-          (* Initialize global strings to point to an empty string by default *)
-          let str = "" in
-          let c_str = L.define_global (n ^ "_str") (L.const_stringz context str) the_module in
-
-          c_str
+        | A.String -> L.const_null (ltype_of_typ t)
         | _ -> L.const_int (ltype_of_typ t) 0
       in StringMap.add n (L.define_global n init the_module) m in
     List.fold_left global_var StringMap.empty globals in
