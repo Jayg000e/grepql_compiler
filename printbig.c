@@ -3,6 +3,8 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 /*
  * Font information: one byte per row, 8 rows per character
@@ -62,6 +64,19 @@ void printbig(int c)
     }
     putchar('\n');
   } while (index & 0x7); 
+}
+
+char* concat(const char* s1, const char* s2) {
+    size_t s1_len = strlen(s1);
+    size_t s2_len = strlen(s2);
+    char* result = malloc(s1_len + s2_len + 1); // +1 for the null terminator
+    if (result == NULL) {
+        perror("Failed to allocate memory for string concatenation");
+        exit(1);
+    }
+    strcpy(result, s1);
+    strcat(result, s2);
+    return result;
 }
 
 

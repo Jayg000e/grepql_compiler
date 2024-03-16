@@ -6,17 +6,51 @@
 main:                                   # @main
 	.cfi_startproc
 # %bb.0:                                # %entry
-	pushq	%rax
+	pushq	%r14
 	.cfi_def_cfa_offset 16
-	leaq	.Ltmp(%rip), %rsi
-	movq	%rsi, (%rsp)
-	movq	s2@GOTPCREL(%rip), %rax
-	movq	%rsi, (%rax)
-	leaq	.Lfmt.2(%rip), %rdi
+	pushq	%rbx
+	.cfi_def_cfa_offset 24
+	subq	$24, %rsp
+	.cfi_def_cfa_offset 48
+	.cfi_offset %rbx, -24
+	.cfi_offset %r14, -16
+	leaq	.Ltmp(%rip), %rdi
+	movq	%rdi, 16(%rsp)
+	movq	s2@GOTPCREL(%rip), %r14
+	movq	%rdi, (%r14)
+	leaq	.Ltmp.3(%rip), %rsi
+	movq	%rsi, 8(%rsp)
+	callq	concat@PLT
+	movq	%rax, (%rsp)
+	leaq	.Lfmt.2(%rip), %rbx
+	movq	%rbx, %rdi
+	movq	%rax, %rsi
+	xorl	%eax, %eax
+	callq	printf@PLT
+	movq	16(%rsp), %rsi
+	movq	8(%rsp), %rdi
+	callq	concat@PLT
+	movq	%rax, (%rsp)
+	movq	8(%rsp), %rdi
+	movq	%rax, %rsi
+	callq	concat@PLT
+	movq	%rax, (%rsp)
+	movq	%rbx, %rdi
+	movq	%rax, %rsi
+	xorl	%eax, %eax
+	callq	printf@PLT
+	movl	$100, %edi
+	callq	printbig@PLT
+	movq	(%r14), %rsi
+	movq	%rbx, %rdi
 	xorl	%eax, %eax
 	callq	printf@PLT
 	xorl	%eax, %eax
-	popq	%rcx
+	addq	$24, %rsp
+	.cfi_def_cfa_offset 24
+	popq	%rbx
+	.cfi_def_cfa_offset 16
+	popq	%r14
 	.cfi_def_cfa_offset 8
 	retq
 .Lfunc_end0:
@@ -51,5 +85,10 @@ s2:
 .Ltmp:
 	.asciz	"abc"
 	.size	.Ltmp, 4
+
+	.type	.Ltmp.3,@object         # @tmp.3
+.Ltmp.3:
+	.asciz	"cba"
+	.size	.Ltmp.3, 4
 
 	.section	".note.GNU-stack","",@progbits

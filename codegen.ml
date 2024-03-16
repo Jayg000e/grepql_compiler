@@ -62,6 +62,11 @@ let translate (globals, functions) =
       L.function_type i32_t [| i32_t |] in
   let printbig_func : L.llvalue =
       L.declare_function "printbig" printbig_t the_module in
+  
+  let concat_t : L.lltype = 
+      L.function_type i8_ptr_t [|i8_ptr_t; i8_ptr_t|] in
+  let concat_func : L.llvalue = 
+      L.declare_function "concat" concat_t the_module in
 
   (* Define each function (arguments and return type) so we can 
      call it even before we've created its body *)
@@ -168,6 +173,8 @@ let translate (globals, functions) =
 	    "printf" builder
       | SCall ("printbig", [e]) ->
 	  L.build_call printbig_func [| (expr builder e) |] "printbig" builder
+      | SCall ("concat", [e1; e2]) ->
+    L.build_call concat_func [| (expr builder e1); (expr builder e2)|] "concat" builder
       | SCall ("printf", [e]) -> 
 	  L.build_call printf_func [| float_format_str ; (expr builder e) |]
 	    "printf" builder
