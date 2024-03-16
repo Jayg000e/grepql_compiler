@@ -1,12 +1,13 @@
 {
   open Microcparse
 
-  (* let print_token token =
+  let print_token token =
     print_endline (match token with
       | LPAREN -> "LPAREN"
       | RPAREN -> "RPAREN"
       | LBRACE -> "LBRACE"
       | RBRACE -> "RBRACE"
+      | AT -> "AT"
       | SEMI -> "SEMI"
       | COMMA -> "COMMA"
       | PLUS -> "PLUS"
@@ -33,6 +34,7 @@
       | FLOAT -> "FLOAT"
       | VOID -> "VOID"
       | STRING -> "STRING"
+      | LIST -> "LIST"
       | BLIT(b) -> "BLIT(" ^ string_of_bool b ^ ")"
       | LITERAL(l) -> "LITERAL(" ^ string_of_int l ^ ")"
       | FLIT(l) -> "FLIT(" ^ l ^ ")"
@@ -41,8 +43,8 @@
       | EOF -> "EOF"
       | _ -> "Other"
     );
-    token *)
-  let print_token token = token
+    token
+  (* let print_token token = token *)
 }
 
 let digit = ['0' - '9']
@@ -56,6 +58,7 @@ rule token = parse
 | ')'      { print_token RPAREN }
 | '{'      { print_token LBRACE }
 | '}'      { print_token RBRACE }
+| '@'      { print_token AT     }
 | ';'      { print_token SEMI }
 | ','      { print_token COMMA }
 | '+'      { print_token PLUS }
@@ -82,6 +85,7 @@ rule token = parse
 | "float"  { print_token FLOAT }
 | "void"   { print_token VOID }
 | "string" { print_token STRING }
+| "list"    { print_token LIST }
 | "true"   { print_token (BLIT(true))  }
 | "false"  { print_token (BLIT(false)) }
 | digits as lxm { print_token (LITERAL(int_of_string lxm)) }

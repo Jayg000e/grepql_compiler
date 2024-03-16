@@ -4,9 +4,9 @@
 open Ast
 %}
 
-%token SEMI LPAREN RPAREN LBRACE RBRACE COMMA PLUS MINUS TIMES DIVIDE ASSIGN
+%token SEMI LPAREN RPAREN LBRACE RBRACE COMMA PLUS MINUS TIMES DIVIDE ASSIGN AT
 %token NOT EQ NEQ LT LEQ GT GEQ AND OR
-%token RETURN IF ELSE FOR WHILE INT BOOL FLOAT VOID STRING
+%token RETURN IF ELSE FOR WHILE INT BOOL FLOAT VOID STRING LIST
 %token <int> LITERAL
 %token <bool> BLIT
 %token <string> ID FLIT
@@ -59,6 +59,10 @@ typ:
   | FLOAT { Float }
   | VOID  { Void  }
   | STRING { String }
+  | LIST INT AT               { ListType(Int) }   
+  | LIST BOOL AT              { ListType(Bool) }  
+  | LIST FLOAT AT             { ListType(Float) }  
+  | LIST STRING AT            { ListType(String)}
 
 vdecl_list:
     /* nothing */    { [] }
