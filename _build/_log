@@ -1,40 +1,46 @@
 ### Starting build.
-# Target: test_parser.ml.depends, tags: { package(llvm), package(llvm.analysis), warn(+a-4), extension:ml, file:test_parser.ml, ocaml, ocamldep, quiet, traverse }
-/usr/bin/ocamldep.opt -modules test_parser.ml > test_parser.ml.depends # cached
-# Target: ast.ml.depends, tags: { package(llvm), package(llvm.analysis), warn(+a-4), extension:ml, file:ast.ml, ocaml, ocamldep, quiet, traverse }
-/usr/bin/ocamldep.opt -modules ast.ml > ast.ml.depends
+# Target: test_semmant.ml.depends, tags: { package(llvm), package(llvm.analysis), warn(+a-4), extension:ml, file:test_semmant.ml, ocaml, ocamldep, quiet, traverse }
+/usr/bin/ocamldep.opt -modules test_semmant.ml > test_semmant.ml.depends # cached
 # Target: microcparse.mly, tags: { package(llvm), package(llvm.analysis), warn(+a-4), extension:mly, file:microcparse.mly, infer, ocaml, ocamlyacc, parser, quiet, traverse }
 /usr/bin/ocamlyacc microcparse.mly # cached
 # Target: microcparse.mli.depends, tags: { package(llvm), package(llvm.analysis), warn(+a-4), extension:mli, file:microcparse.mli, ocaml, ocamldep, quiet, traverse }
 /usr/bin/ocamldep.opt -modules microcparse.mli > microcparse.mli.depends # cached
+# Target: ast.ml.depends, tags: { package(llvm), package(llvm.analysis), warn(+a-4), extension:ml, file:ast.ml, ocaml, ocamldep, quiet, traverse }
+/usr/bin/ocamldep.opt -modules ast.ml > ast.ml.depends # cached
 # Target: ast.cmo, tags: { package(llvm), package(llvm.analysis), warn(+a-4), byte, compile, extension:cmo, extension:ml, file:ast.cmo, file:ast.ml, implem, ocaml, quiet, traverse }
-/usr/bin/ocamlc.opt -c -w +a-4 -o ast.cmo ast.ml
+/usr/bin/ocamlc.opt -c -w +a-4 -o ast.cmo ast.ml # cached
+# Target: microcparse.cmi, tags: { package(llvm), package(llvm.analysis), warn(+a-4), byte, compile, extension:mli, file:microcparse.mli, interf, ocaml, quiet, traverse }
+/usr/bin/ocamlc.opt -c -w +a-4 -o microcparse.cmi microcparse.mli # cached
+# Target: sast.ml.depends, tags: { package(llvm), package(llvm.analysis), warn(+a-4), extension:ml, file:sast.ml, ocaml, ocamldep, quiet, traverse }
+/usr/bin/ocamldep.opt -modules sast.ml > sast.ml.depends
 # Target: scanner.mll, tags: { package(llvm), package(llvm.analysis), warn(+a-4), extension:mll, file:scanner.mll, lexer, ocaml, ocamllex, quiet, traverse }
 /usr/bin/ocamllex.opt -q scanner.mll # cached
 # Target: scanner.ml.depends, tags: { package(llvm), package(llvm.analysis), warn(+a-4), extension:ml, file:scanner.ml, ocaml, ocamldep, quiet, traverse }
 /usr/bin/ocamldep.opt -modules scanner.ml > scanner.ml.depends # cached
-# Target: microcparse.cmi, tags: { package(llvm), package(llvm.analysis), warn(+a-4), byte, compile, extension:mli, file:microcparse.mli, interf, ocaml, quiet, traverse }
-/usr/bin/ocamlc.opt -c -w +a-4 -o microcparse.cmi microcparse.mli
 # Target: scanner.cmo, tags: { package(llvm), package(llvm.analysis), warn(+a-4), byte, compile, extension:cmo, extension:ml, file:scanner.cmo, file:scanner.ml, implem, ocaml, quiet, traverse }
-/usr/bin/ocamlc.opt -c -w +a-4 -o scanner.cmo scanner.ml
-+ /usr/bin/ocamlc.opt -c -w +a-4 -o scanner.cmo scanner.ml
-File "scanner.mll", line 42, characters 8-9:
-Warning 11: this match case is unused.
-# Target: test_parser.cmo, tags: { package(llvm), package(llvm.analysis), warn(+a-4), byte, compile, extension:cmo, extension:ml, file:test_parser.cmo, file:test_parser.ml, implem, ocaml, quiet, traverse }
-/usr/bin/ocamlc.opt -c -w +a-4 -o test_parser.cmo test_parser.ml
+/usr/bin/ocamlc.opt -c -w +a-4 -o scanner.cmo scanner.ml # cached
+# Target: semant.ml.depends, tags: { package(llvm), package(llvm.analysis), warn(+a-4), extension:ml, file:semant.ml, ocaml, ocamldep, quiet, traverse }
+/usr/bin/ocamldep.opt -modules semant.ml > semant.ml.depends # cached
+# Target: sast.cmo, tags: { package(llvm), package(llvm.analysis), warn(+a-4), byte, compile, extension:cmo, extension:ml, file:sast.cmo, file:sast.ml, implem, ocaml, quiet, traverse }
+/usr/bin/ocamlc.opt -c -w +a-4 -o sast.cmo sast.ml
+# Target: semant.cmo, tags: { package(llvm), package(llvm.analysis), warn(+a-4), byte, compile, extension:cmo, extension:ml, file:semant.cmo, file:semant.ml, implem, ocaml, quiet, traverse }
+/usr/bin/ocamlc.opt -c -w +a-4 -o semant.cmo semant.ml
+# Target: test_semmant.cmo, tags: { package(llvm), package(llvm.analysis), warn(+a-4), byte, compile, extension:cmo, extension:ml, file:test_semmant.cmo, file:test_semmant.ml, implem, ocaml, quiet, traverse }
+/usr/bin/ocamlc.opt -c -w +a-4 -o test_semmant.cmo test_semmant.ml
 # Target: microcparse.ml.depends, tags: { package(llvm), package(llvm.analysis), warn(+a-4), extension:ml, file:microcparse.ml, ocaml, ocamldep, quiet, traverse }
 /usr/bin/ocamldep.opt -modules microcparse.ml > microcparse.ml.depends # cached
 # Target: ast.cmx, tags: { package(llvm), package(llvm.analysis), warn(+a-4), compile, extension:cmx, extension:ml, file:ast.cmx, file:ast.ml, implem, native, ocaml, quiet, traverse }
-/usr/bin/ocamlopt.opt -c -w +a-4 -o ast.cmx ast.ml
+/usr/bin/ocamlopt.opt -c -w +a-4 -o ast.cmx ast.ml # cached
 # Target: microcparse.cmx, tags: { package(llvm), package(llvm.analysis), warn(+a-4), compile, extension:cmx, extension:ml, file:microcparse.cmx, file:microcparse.ml, implem, native, ocaml, quiet, traverse }
-/usr/bin/ocamlopt.opt -c -w +a-4 -o microcparse.cmx microcparse.ml
+/usr/bin/ocamlopt.opt -c -w +a-4 -o microcparse.cmx microcparse.ml # cached
 # Target: scanner.cmx, tags: { package(llvm), package(llvm.analysis), warn(+a-4), compile, extension:cmx, extension:ml, file:scanner.cmx, file:scanner.ml, implem, native, ocaml, quiet, traverse }
-/usr/bin/ocamlopt.opt -c -w +a-4 -o scanner.cmx scanner.ml
-+ /usr/bin/ocamlopt.opt -c -w +a-4 -o scanner.cmx scanner.ml
-File "scanner.mll", line 42, characters 8-9:
-Warning 11: this match case is unused.
-# Target: test_parser.cmx, tags: { package(llvm), package(llvm.analysis), warn(+a-4), compile, extension:cmx, extension:ml, file:test_parser.cmx, file:test_parser.ml, implem, native, ocaml, quiet, traverse }
-/usr/bin/ocamlopt.opt -c -w +a-4 -o test_parser.cmx test_parser.ml
-# Target: test_parser.native, tags: { package(llvm), package(llvm.analysis), warn(+a-4), dont_link_with, extension:native, file:test_parser.native, link, native, ocaml, program, quiet, traverse }
-/usr/bin/ocamlopt.opt ast.cmx microcparse.cmx scanner.cmx test_parser.cmx -o test_parser.native
+/usr/bin/ocamlopt.opt -c -w +a-4 -o scanner.cmx scanner.ml # cached
+# Target: sast.cmx, tags: { package(llvm), package(llvm.analysis), warn(+a-4), compile, extension:cmx, extension:ml, file:sast.cmx, file:sast.ml, implem, native, ocaml, quiet, traverse }
+/usr/bin/ocamlopt.opt -c -w +a-4 -o sast.cmx sast.ml
+# Target: semant.cmx, tags: { package(llvm), package(llvm.analysis), warn(+a-4), compile, extension:cmx, extension:ml, file:semant.cmx, file:semant.ml, implem, native, ocaml, quiet, traverse }
+/usr/bin/ocamlopt.opt -c -w +a-4 -o semant.cmx semant.ml
+# Target: test_semmant.cmx, tags: { package(llvm), package(llvm.analysis), warn(+a-4), compile, extension:cmx, extension:ml, file:test_semmant.cmx, file:test_semmant.ml, implem, native, ocaml, quiet, traverse }
+/usr/bin/ocamlopt.opt -c -w +a-4 -o test_semmant.cmx test_semmant.ml
+# Target: test_semmant.native, tags: { package(llvm), package(llvm.analysis), warn(+a-4), dont_link_with, extension:native, file:test_semmant.native, link, native, ocaml, program, quiet, traverse }
+/usr/bin/ocamlopt.opt ast.cmx microcparse.cmx sast.cmx scanner.cmx semant.cmx test_semmant.cmx -o test_semmant.native
 # Compilation successful.
