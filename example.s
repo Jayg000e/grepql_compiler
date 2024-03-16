@@ -6,34 +6,19 @@
 main:                                   # @main
 	.cfi_startproc
 # %bb.0:                                # %entry
-	pushq	%rax
-	.cfi_def_cfa_offset 16
-	leaq	.Lfmt(%rip), %rdi
-	movl	$2, %esi
+	subq	$24, %rsp
+	.cfi_def_cfa_offset 32
+	leaq	.Ltmp(%rip), %rsi
+	movq	%rsi, 8(%rsp)
+	leaq	.Lfmt.2(%rip), %rdi
 	xorl	%eax, %eax
 	callq	printf@PLT
 	xorl	%eax, %eax
-	popq	%rcx
+	addq	$24, %rsp
 	.cfi_def_cfa_offset 8
 	retq
 .Lfunc_end0:
 	.size	main, .Lfunc_end0-main
-	.cfi_endproc
-                                        # -- End function
-	.globl	add                     # -- Begin function add
-	.p2align	4, 0x90
-	.type	add,@function
-add:                                    # @add
-	.cfi_startproc
-# %bb.0:                                # %entry
-                                        # kill: def $esi killed $esi def $rsi
-                                        # kill: def $edi killed $edi def $rdi
-	movl	%edi, -4(%rsp)
-	movl	%esi, -8(%rsp)
-	leal	(%rdi,%rsi), %eax
-	retq
-.Lfunc_end1:
-	.size	add, .Lfunc_end1-add
 	.cfi_endproc
                                         # -- End function
 	.type	.Lfmt,@object           # @fmt
@@ -49,12 +34,12 @@ add:                                    # @add
 
 	.type	.Lfmt.2,@object         # @fmt.2
 .Lfmt.2:
-	.asciz	"%d\n"
+	.asciz	"%s\n"
 	.size	.Lfmt.2, 4
 
-	.type	.Lfmt.3,@object         # @fmt.3
-.Lfmt.3:
-	.asciz	"%g\n"
-	.size	.Lfmt.3, 4
+	.type	.Ltmp,@object           # @tmp
+.Ltmp:
+	.asciz	"sss"
+	.size	.Ltmp, 4
 
 	.section	".note.GNU-stack","",@progbits

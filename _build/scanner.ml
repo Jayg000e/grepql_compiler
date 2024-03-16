@@ -2,7 +2,7 @@
  
   open Microcparse
 
-  let print_token token =
+  (* let print_token token =
     print_endline (match token with
       | LPAREN -> "LPAREN"
       | RPAREN -> "RPAREN"
@@ -42,9 +42,10 @@
       | EOF -> "EOF"
       | _ -> "Other"
     );
-    token
+    token *)
+  let print_token token = token
 
-# 48 "scanner.ml"
+# 49 "scanner.ml"
 let __ocaml_lex_tables = {
   Lexing.lex_base =
    "\000\000\216\255\217\255\001\000\078\000\155\000\165\000\240\000\
@@ -1124,229 +1125,229 @@ let rec token lexbuf =
 and __ocaml_lex_token_rec lexbuf __ocaml_lex_state =
   match Lexing.engine __ocaml_lex_tables __ocaml_lex_state lexbuf with
       | 0 ->
-# 52 "scanner.mll"
+# 53 "scanner.mll"
                        ( token lexbuf )
-# 1130 "scanner.ml"
+# 1131 "scanner.ml"
 
   | 1 ->
-# 53 "scanner.mll"
+# 54 "scanner.mll"
            ( comment lexbuf )
-# 1135 "scanner.ml"
+# 1136 "scanner.ml"
 
   | 2 ->
-# 54 "scanner.mll"
+# 55 "scanner.mll"
            ( print_token LPAREN )
-# 1140 "scanner.ml"
+# 1141 "scanner.ml"
 
   | 3 ->
-# 55 "scanner.mll"
+# 56 "scanner.mll"
            ( print_token RPAREN )
-# 1145 "scanner.ml"
+# 1146 "scanner.ml"
 
   | 4 ->
-# 56 "scanner.mll"
+# 57 "scanner.mll"
            ( print_token LBRACE )
-# 1150 "scanner.ml"
+# 1151 "scanner.ml"
 
   | 5 ->
-# 57 "scanner.mll"
+# 58 "scanner.mll"
            ( print_token RBRACE )
-# 1155 "scanner.ml"
+# 1156 "scanner.ml"
 
   | 6 ->
-# 58 "scanner.mll"
+# 59 "scanner.mll"
            ( print_token SEMI )
-# 1160 "scanner.ml"
+# 1161 "scanner.ml"
 
   | 7 ->
-# 59 "scanner.mll"
+# 60 "scanner.mll"
            ( print_token COMMA )
-# 1165 "scanner.ml"
+# 1166 "scanner.ml"
 
   | 8 ->
-# 60 "scanner.mll"
+# 61 "scanner.mll"
            ( print_token PLUS )
-# 1170 "scanner.ml"
+# 1171 "scanner.ml"
 
   | 9 ->
-# 61 "scanner.mll"
+# 62 "scanner.mll"
            ( print_token MINUS )
-# 1175 "scanner.ml"
+# 1176 "scanner.ml"
 
   | 10 ->
-# 62 "scanner.mll"
+# 63 "scanner.mll"
            ( print_token TIMES )
-# 1180 "scanner.ml"
+# 1181 "scanner.ml"
 
   | 11 ->
-# 63 "scanner.mll"
+# 64 "scanner.mll"
            ( print_token DIVIDE )
-# 1185 "scanner.ml"
+# 1186 "scanner.ml"
 
   | 12 ->
-# 64 "scanner.mll"
+# 65 "scanner.mll"
            ( print_token ASSIGN )
-# 1190 "scanner.ml"
+# 1191 "scanner.ml"
 
   | 13 ->
-# 65 "scanner.mll"
+# 66 "scanner.mll"
            ( print_token EQ )
-# 1195 "scanner.ml"
+# 1196 "scanner.ml"
 
   | 14 ->
-# 66 "scanner.mll"
+# 67 "scanner.mll"
            ( print_token NEQ )
-# 1200 "scanner.ml"
+# 1201 "scanner.ml"
 
   | 15 ->
-# 67 "scanner.mll"
+# 68 "scanner.mll"
            ( print_token LT )
-# 1205 "scanner.ml"
+# 1206 "scanner.ml"
 
   | 16 ->
-# 68 "scanner.mll"
+# 69 "scanner.mll"
            ( print_token LEQ )
-# 1210 "scanner.ml"
+# 1211 "scanner.ml"
 
   | 17 ->
-# 69 "scanner.mll"
+# 70 "scanner.mll"
            ( print_token GT )
-# 1215 "scanner.ml"
+# 1216 "scanner.ml"
 
   | 18 ->
-# 70 "scanner.mll"
+# 71 "scanner.mll"
            ( print_token GEQ )
-# 1220 "scanner.ml"
+# 1221 "scanner.ml"
 
   | 19 ->
-# 71 "scanner.mll"
+# 72 "scanner.mll"
            ( print_token AND )
-# 1225 "scanner.ml"
+# 1226 "scanner.ml"
 
   | 20 ->
-# 72 "scanner.mll"
+# 73 "scanner.mll"
            ( print_token OR )
-# 1230 "scanner.ml"
+# 1231 "scanner.ml"
 
   | 21 ->
-# 73 "scanner.mll"
+# 74 "scanner.mll"
            ( print_token NOT )
-# 1235 "scanner.ml"
+# 1236 "scanner.ml"
 
   | 22 ->
-# 74 "scanner.mll"
+# 75 "scanner.mll"
            ( print_token IF )
-# 1240 "scanner.ml"
+# 1241 "scanner.ml"
 
   | 23 ->
-# 75 "scanner.mll"
+# 76 "scanner.mll"
            ( print_token ELSE )
-# 1245 "scanner.ml"
+# 1246 "scanner.ml"
 
   | 24 ->
-# 76 "scanner.mll"
+# 77 "scanner.mll"
            ( print_token FOR )
-# 1250 "scanner.ml"
+# 1251 "scanner.ml"
 
   | 25 ->
-# 77 "scanner.mll"
+# 78 "scanner.mll"
            ( print_token WHILE )
-# 1255 "scanner.ml"
+# 1256 "scanner.ml"
 
   | 26 ->
-# 78 "scanner.mll"
+# 79 "scanner.mll"
            ( print_token RETURN )
-# 1260 "scanner.ml"
+# 1261 "scanner.ml"
 
   | 27 ->
-# 79 "scanner.mll"
+# 80 "scanner.mll"
            ( print_token INT )
-# 1265 "scanner.ml"
+# 1266 "scanner.ml"
 
   | 28 ->
-# 80 "scanner.mll"
+# 81 "scanner.mll"
            ( print_token BOOL )
-# 1270 "scanner.ml"
+# 1271 "scanner.ml"
 
   | 29 ->
-# 81 "scanner.mll"
+# 82 "scanner.mll"
            ( print_token FLOAT )
-# 1275 "scanner.ml"
+# 1276 "scanner.ml"
 
   | 30 ->
-# 82 "scanner.mll"
+# 83 "scanner.mll"
            ( print_token VOID )
-# 1280 "scanner.ml"
+# 1281 "scanner.ml"
 
   | 31 ->
-# 83 "scanner.mll"
+# 84 "scanner.mll"
            ( print_token STRING )
-# 1285 "scanner.ml"
+# 1286 "scanner.ml"
 
   | 32 ->
-# 84 "scanner.mll"
+# 85 "scanner.mll"
            ( print_token (BLIT(true))  )
-# 1290 "scanner.ml"
+# 1291 "scanner.ml"
 
   | 33 ->
-# 85 "scanner.mll"
+# 86 "scanner.mll"
            ( print_token (BLIT(false)) )
-# 1295 "scanner.ml"
+# 1296 "scanner.ml"
 
   | 34 ->
 let
-# 86 "scanner.mll"
+# 87 "scanner.mll"
             lxm
-# 1301 "scanner.ml"
+# 1302 "scanner.ml"
 = Lexing.sub_lexeme lexbuf lexbuf.Lexing.lex_start_pos lexbuf.Lexing.lex_curr_pos in
-# 86 "scanner.mll"
+# 87 "scanner.mll"
                 ( print_token (LITERAL(int_of_string lxm)) )
-# 1305 "scanner.ml"
+# 1306 "scanner.ml"
 
   | 35 ->
 let
-# 87 "scanner.mll"
+# 88 "scanner.mll"
                                                          lxm
-# 1311 "scanner.ml"
+# 1312 "scanner.ml"
 = Lexing.sub_lexeme lexbuf lexbuf.Lexing.lex_start_pos lexbuf.Lexing.lex_curr_pos in
-# 87 "scanner.mll"
+# 88 "scanner.mll"
                                                              ( print_token (FLIT(lxm)) )
-# 1315 "scanner.ml"
+# 1316 "scanner.ml"
 
   | 36 ->
 let
-# 88 "scanner.mll"
+# 89 "scanner.mll"
                                                          lxm
-# 1321 "scanner.ml"
+# 1322 "scanner.ml"
 = Lexing.sub_lexeme lexbuf lexbuf.Lexing.lex_start_pos lexbuf.Lexing.lex_curr_pos in
-# 88 "scanner.mll"
+# 89 "scanner.mll"
                                                              ( print_token (ID(lxm)) )
-# 1325 "scanner.ml"
+# 1326 "scanner.ml"
 
   | 37 ->
 let
-# 89 "scanner.mll"
+# 90 "scanner.mll"
                         str
-# 1331 "scanner.ml"
+# 1332 "scanner.ml"
 = Lexing.sub_lexeme lexbuf (lexbuf.Lexing.lex_start_pos + 1) (lexbuf.Lexing.lex_curr_pos + -1) in
-# 89 "scanner.mll"
+# 90 "scanner.mll"
                                   ( print_token (STRLIT(str)) )
-# 1335 "scanner.ml"
+# 1336 "scanner.ml"
 
   | 38 ->
-# 90 "scanner.mll"
+# 91 "scanner.mll"
       ( print_token EOF )
-# 1340 "scanner.ml"
+# 1341 "scanner.ml"
 
   | 39 ->
 let
-# 91 "scanner.mll"
+# 92 "scanner.mll"
        char
-# 1346 "scanner.ml"
+# 1347 "scanner.ml"
 = Lexing.sub_lexeme_char lexbuf lexbuf.Lexing.lex_start_pos in
-# 91 "scanner.mll"
+# 92 "scanner.mll"
             ( raise (Failure("illegal character " ^ Char.escaped char)) )
-# 1350 "scanner.ml"
+# 1351 "scanner.ml"
 
   | __ocaml_lex_state -> lexbuf.Lexing.refill_buff lexbuf;
       __ocaml_lex_token_rec lexbuf __ocaml_lex_state
@@ -1356,14 +1357,14 @@ and comment lexbuf =
 and __ocaml_lex_comment_rec lexbuf __ocaml_lex_state =
   match Lexing.engine __ocaml_lex_tables __ocaml_lex_state lexbuf with
       | 0 ->
-# 94 "scanner.mll"
+# 95 "scanner.mll"
        ( token lexbuf )
-# 1362 "scanner.ml"
+# 1363 "scanner.ml"
 
   | 1 ->
-# 95 "scanner.mll"
+# 96 "scanner.mll"
        ( comment lexbuf )
-# 1367 "scanner.ml"
+# 1368 "scanner.ml"
 
   | __ocaml_lex_state -> lexbuf.Lexing.refill_buff lexbuf;
       __ocaml_lex_comment_rec lexbuf __ocaml_lex_state

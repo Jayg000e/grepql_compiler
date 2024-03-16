@@ -1,7 +1,8 @@
 int main()
 { 
   int x;
-  string a;
-  a = "sss";
+  string s;
+  s = "sss";
+  prints(s);
   return 0;
 }
