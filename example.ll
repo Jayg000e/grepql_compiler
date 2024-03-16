@@ -12,8 +12,7 @@ declare i32 @printbig(i32)
 
 define i32 @main() {
 entry:
-  %add_result = call i32 @add(i32 17, i32 25)
-  %printf = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @fmt, i32 0, i32 0), i32 %add_result)
+  %printf = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @fmt, i32 0, i32 0), i32 2)
   ret i32 0
 }
 

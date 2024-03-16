@@ -8,11 +8,8 @@ main:                                   # @main
 # %bb.0:                                # %entry
 	pushq	%rax
 	.cfi_def_cfa_offset 16
-	movl	$17, %edi
-	movl	$25, %esi
-	callq	add@PLT
 	leaq	.Lfmt(%rip), %rdi
-	movl	%eax, %esi
+	movl	$2, %esi
 	xorl	%eax, %eax
 	callq	printf@PLT
 	xorl	%eax, %eax
