@@ -33,6 +33,13 @@ let translate (globals, functions) =
   and float_t    = L.double_type context
   and void_t     = L.void_type   context in
   let i8_ptr_t   = L.pointer_type i8_t in
+  let void_ptr_t = L.pointer_type i8_t in  (* C's void* as LLVM's i8* *)
+  let void_ptr_ptr_t = L.pointer_type void_ptr_t in  (* C's void** as LLVM's i8** *)
+  let i8_ptr_ptr_t   = L.pointer_type i8_ptr_t in
+
+  (* Defining the struct in LLVM to match the C structure, including the enum as i32 *)
+  let strings_t = L.struct_type context  [| i8_ptr_ptr_t; i32_t; i32_t|] in
+  let strings_ptr_t = L.pointer_type strings_t in 
 
   (* Return the LLVM type for a MicroC type *)
   let ltype_of_typ = function
@@ -41,6 +48,7 @@ let translate (globals, functions) =
     | A.Float -> float_t
     | A.Void  -> void_t
     | A.String -> i8_ptr_t
+    | A.Strings -> strings_ptr_t
   in
 
   (* Create a map of global variables after creating each *)
@@ -68,6 +76,26 @@ let translate (globals, functions) =
   let concat_func : L.llvalue = 
       L.declare_function "concat" concat_t the_module in
 
+  let newStrings_t : L.lltype = 
+      L.function_type strings_ptr_t [||] in
+  let newStrings_func : L.llvalue = 
+      L.declare_function "newStrings" newStrings_t the_module in
+  
+  let append_t : L.lltype =
+      L.function_type i32_t [| strings_ptr_t; i8_ptr_t|] in
+  let append_func : L.llvalue =
+      L.declare_function "append" append_t the_module in
+  
+  let size_t : L.lltype =
+      L.function_type i32_t [| strings_ptr_t |] in
+  let size_func : L.llvalue =
+      L.declare_function "size" size_t the_module in
+
+  let show_t : L.lltype =
+      L.function_type i32_t [| strings_ptr_t |] in
+  let show_func : L.llvalue =
+      L.declare_function "show" show_t the_module in
+    
   (* Define each function (arguments and return type) so we can 
      call it even before we've created its body *)
   let function_decls : (L.llvalue * sfunc_decl) StringMap.t =
@@ -175,6 +203,15 @@ let translate (globals, functions) =
 	  L.build_call printbig_func [| (expr builder e) |] "printbig" builder
       | SCall ("concat", [e1; e2]) ->
     L.build_call concat_func [| (expr builder e1); (expr builder e2)|] "concat" builder
+    | SCall ("newStrings", []) ->
+      L.build_call newStrings_func [||] "newStrings" builder
+    | SCall ("show", [e]) ->
+        L.build_call show_func [| (expr builder e)|] "show" builder
+    | SCall ("append", [e1;e2]) ->
+          L.build_call append_func [| (expr builder e1);(expr builder e2)|] "append" builder
+    | SCall ("size", [e]) ->
+          L.build_call size_func [| (expr builder e)|] "size" builder
+
       | SCall ("printf", [e]) -> 
 	  L.build_call printf_func [| float_format_str ; (expr builder e) |]
 	    "printf" builder

@@ -4,6 +4,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <string.h>
 
 /*
@@ -78,6 +79,63 @@ char* concat(const char* s1, const char* s2) {
     strcat(result, s2);
     return result;
 }
+
+typedef struct {
+    char** items;   // Array of pointers to strings
+    int capacity;
+    int total;
+} Strings;
+
+Strings* newStrings() {
+    Strings* list = (Strings*)malloc(sizeof(Strings));
+    if (!list) return NULL; // Check for malloc failure
+
+    list->capacity = 4;  // Initial capacity
+    list->total = 0;
+    list->items = (char**)malloc(sizeof(char*) * list->capacity);
+    if (!list->items) {  // Check for malloc failure
+        free(list);
+        return NULL;
+    }
+    return list;
+}
+
+static void resize(Strings* list, int capacity) {
+  char** items = (char**)realloc(list->items, sizeof(char*) * capacity);
+  if (items) {
+      list->items = items;
+      list->capacity = capacity;
+  }
+}
+
+void append(Strings* list, char* item) {
+    if (list->total == list->capacity) {
+        resize(list, list->capacity * 2);
+    }
+    list->items[list->total++] = strdup(item); // Store a copy of the string
+}
+
+int size(const Strings* list) {
+    if (list == NULL) {
+        return -1;  // Return an error code if the list pointer is null.
+    }
+    return list->total;
+}
+
+void show(const Strings* list) {
+    for (int i = 0; i < list->total; i++) {
+        printf("%s\n", list->items[i]);
+    }
+}
+
+void freeStrings(Strings* list) {
+    for (int i = 0; i < list->total; ++i) {
+        free(list->items[i]); // Free each string
+    }
+    free(list->items); // Free the array of pointers
+    free(list); // Free the structure itself
+}
+
 
 
 #ifdef BUILD_TEST

@@ -45,7 +45,11 @@ let check (globals, functions) =
         ("printf", [Float], Void);
         ("prints", [String], Void);
         ("printbig", [Int], Void);
-        ("concat", [String; String], String) (* Here's the new function *)
+        ("concat", [String; String], String); (* Here's the new function *)
+        ("newStrings", [], Strings);
+        ("append", [Strings; String], Void);
+        ("size", [Strings], Int);
+        ("show", [Strings], Void);
     ]
   in
 
