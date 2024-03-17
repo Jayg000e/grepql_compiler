@@ -19,6 +19,7 @@ type expr =
   | Unop of uop * expr
   | Assign of string * expr
   | Call of string * expr list
+  | Query of expr
   | Noexpr
 
 type stmt =
@@ -72,6 +73,8 @@ let rec string_of_expr = function
   | Assign(v, e) -> v ^ " = " ^ string_of_expr e
   | Call(f, el) ->
       f ^ "(" ^ String.concat ", " (List.map string_of_expr el) ^ ")"
+  | Query(e) -> 
+      "SELECT " ^ "FROM " ^ string_of_expr e
   | Noexpr -> ""
 
 let rec string_of_stmt = function

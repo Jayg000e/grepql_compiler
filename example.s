@@ -6,26 +6,47 @@
 main:                                   # @main
 	.cfi_startproc
 # %bb.0:                                # %entry
-	subq	$24, %rsp
-	.cfi_def_cfa_offset 32
+	pushq	%rbx
+	.cfi_def_cfa_offset 16
+	subq	$32, %rsp
+	.cfi_def_cfa_offset 48
+	.cfi_offset %rbx, -16
+	leaq	.Ltmp(%rip), %rax
+	movq	%rax, 16(%rsp)
 	callq	newStrings@PLT
-	movq	%rax, (%rsp)
-	leaq	.Ltmp(%rip), %rsi
+	movq	%rax, 8(%rsp)
+	leaq	.Ltmp.3(%rip), %rcx
+	movq	%rcx, 16(%rsp)
+	leaq	.Ltmp.4(%rip), %rsi
 	movq	%rax, %rdi
 	callq	append@PLT
-	movq	(%rsp), %rdi
-	leaq	.Ltmp.3(%rip), %rsi
+	movq	8(%rsp), %rdi
+	leaq	.Ltmp.5(%rip), %rsi
 	callq	append@PLT
-	movq	(%rsp), %rdi
+	movq	8(%rsp), %rdi
 	callq	show@PLT
-	movq	(%rsp), %rdi
+	movq	8(%rsp), %rdi
 	callq	size@PLT
-	leaq	.Lfmt(%rip), %rdi
+	leaq	.Lfmt(%rip), %rbx
+	movq	%rbx, %rdi
 	movl	%eax, %esi
 	xorl	%eax, %eax
 	callq	printf@PLT
+	movq	16(%rsp), %rdi
+	callq	query@PLT
+	movq	%rax, 8(%rsp)
+	movq	%rax, %rdi
+	callq	size@PLT
+	movq	%rbx, %rdi
+	movl	%eax, %esi
 	xorl	%eax, %eax
-	addq	$24, %rsp
+	callq	printf@PLT
+	movq	8(%rsp), %rdi
+	callq	show@PLT
+	xorl	%eax, %eax
+	addq	$32, %rsp
+	.cfi_def_cfa_offset 16
+	popq	%rbx
 	.cfi_def_cfa_offset 8
 	retq
 .Lfunc_end0:
@@ -50,12 +71,22 @@ main:                                   # @main
 
 	.type	.Ltmp,@object           # @tmp
 .Ltmp:
-	.asciz	"hello"
-	.size	.Ltmp, 6
+	.asciz	"asdasd"
+	.size	.Ltmp, 7
 
 	.type	.Ltmp.3,@object         # @tmp.3
 .Ltmp.3:
+	.asciz	"/home/jayg/Documents/cs4115/grepql_compiler"
+	.size	.Ltmp.3, 44
+
+	.type	.Ltmp.4,@object         # @tmp.4
+.Ltmp.4:
+	.asciz	"hello"
+	.size	.Ltmp.4, 6
+
+	.type	.Ltmp.5,@object         # @tmp.5
+.Ltmp.5:
 	.asciz	"nononon"
-	.size	.Ltmp.3, 8
+	.size	.Ltmp.5, 8
 
 	.section	".note.GNU-stack","",@progbits

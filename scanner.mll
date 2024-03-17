@@ -23,6 +23,8 @@
       | AND -> "AND"
       | OR -> "OR"
       | NOT -> "NOT"
+      | SELECT -> "SELECT"
+      | FROM -> "FROM"
       | IF -> "IF"
       | ELSE -> "ELSE"
       | FOR -> "FOR"
@@ -73,6 +75,8 @@ rule token = parse
 | "&&"     { print_token AND }
 | "||"     { print_token OR }
 | "!"      { print_token NOT }
+| "SELECT" { print_token SELECT}
+| "FROM"   { print_token FROM}
 | "if"     { print_token IF }
 | "else"   { print_token ELSE }
 | "for"    { print_token FOR }

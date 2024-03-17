@@ -98,7 +98,7 @@ let check (globals, functions) =
       try StringMap.find s symbols
       with Not_found -> raise (Failure ("undeclared identifier " ^ s))
     in
-
+    
     (* Return a semantically-checked expression, i.e., with a type *)
     let rec expr = function
         Literal  l -> (Int, SLiteral l)
@@ -154,13 +154,24 @@ let check (globals, functions) =
           in 
           let args' = List.map2 check_call fd.formals args
           in (fd.typ, SCall(fname, args'))
-    in
+      | Query(e) -> 
+          let check_string_expr e = 
+            let (t', e') = expr e
+            and err = "expected String expression in " ^ string_of_expr e
+            in if t' != String then raise (Failure err) else (Strings, Squery((t', e'))) 
+          in
+          check_string_expr e
 
+    in
     let check_bool_expr e = 
       let (t', e') = expr e
       and err = "expected Boolean expression in " ^ string_of_expr e
       in if t' != Bool then raise (Failure err) else (t', e') 
     in
+
+    
+
+    
 
     (* Return a semantically-checked statement i.e. containing sexprs *)
     let rec check_stmt = function

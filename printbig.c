@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
+#include <dirent.h>     // For directory manipulation
 
 /*
  * Font information: one byte per row, 8 rows per character
@@ -136,13 +137,76 @@ void freeStrings(Strings* list) {
     free(list); // Free the structure itself
 }
 
-
-
-#ifdef BUILD_TEST
-int main()
-{
-  char s[] = "HELLO WORLD09AZ";
-  char *c;
-  for ( c = s ; *c ; c++) printbig(*c);
+char* expandPath(const char* path) {
+    if (path[0] == '~') {
+        const char* home = getenv("HOME");
+        if (home != NULL) {
+            // Allocate enough space for the full path: home directory + original path minus ~ + null terminator
+            char* fullPath = (char*)malloc(strlen(home) + strlen(path));
+            if (fullPath == NULL) {
+                perror("Failed to allocate memory for path expansion");
+                return NULL;
+            }
+            strcpy(fullPath, home);
+            strcat(fullPath, path + 1); // Skip the tilde and concatenate
+            return fullPath;
+        }
+    }
+    // If path does not start with ~, or HOME is not set, return a copy of the original path
+    return strdup(path);
 }
-#endif
+
+Strings* query(const char* dirPath) {
+    DIR* dir = opendir(dirPath);
+    if (dir == NULL) {
+        perror("Failed to open directory");
+        return NULL;
+    }
+
+    struct dirent* entry;
+    Strings* fileList = newStrings();
+    if (fileList == NULL) {
+        closedir(dir);
+        fprintf(stderr, "Failed to create Strings list\n");
+        return NULL;
+    }
+
+    while ((entry = readdir(dir)) != NULL) {
+        // Skip "." and ".." entries
+        if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0) {
+            continue;
+        }
+
+        // Check if the entry is a regular file
+        if (entry->d_type == DT_REG) {
+            append(fileList, entry->d_name);
+        }
+    }
+
+    closedir(dir);
+    return fileList;
+}
+
+
+
+// #ifdef BUILD_TEST
+// int main()
+// {
+//   char s[] = "HELLO WORLD09AZ";
+//   char *c;
+//   for ( c = s ; *c ; c++) printbig(*c);
+// }
+// #endif
+
+// int main()
+// {
+//   const char* testDir = "/home/jayg/Documents/cs4115/grepql_compiler";
+
+//   // Call the function with the test directory
+//   Strings* files = query(testDir);
+//   if (files == NULL) {
+//       printf("Test failed: Could not list files in directory '%s'\n", testDir);
+//       return;
+//   }
+//   show(files);
+// }

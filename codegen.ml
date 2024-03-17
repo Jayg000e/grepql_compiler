@@ -95,6 +95,11 @@ let translate (globals, functions) =
       L.function_type i32_t [| strings_ptr_t |] in
   let show_func : L.llvalue =
       L.declare_function "show" show_t the_module in
+
+  let query_t : L.lltype =
+      L.function_type strings_ptr_t [| i8_ptr_t |] in
+  let query_func : L.llvalue =
+      L.declare_function "query" query_t the_module in
     
   (* Define each function (arguments and return type) so we can 
      call it even before we've created its body *)
@@ -225,6 +230,8 @@ let translate (globals, functions) =
                         A.Void -> ""
                       | _ -> f ^ "_result") in
          L.build_call fdef (Array.of_list llargs) result builder
+      | Squery (e) -> 
+        L.build_call query_func [|(expr builder e)|] "query" builder
     in
     
     (* LLVM insists each basic block end with exactly one "terminator" 

@@ -7,6 +7,7 @@ open Ast
 %token SEMI LPAREN RPAREN LBRACE RBRACE COMMA PLUS MINUS TIMES DIVIDE ASSIGN
 %token NOT EQ NEQ LT LEQ GT GEQ AND OR
 %token RETURN IF ELSE FOR WHILE INT BOOL FLOAT VOID STRINGS STRING 
+%token SELECT FROM
 %token <int> LITERAL
 %token <bool> BLIT
 %token <string> ID FLIT
@@ -111,6 +112,11 @@ expr:
   | ID ASSIGN expr   { Assign($1, $3)         }
   | ID LPAREN args_opt RPAREN { Call($1, $3)  }
   | LPAREN expr RPAREN { $2                   }
+  | query             { $1 }
+
+
+query:
+    SELECT FROM expr  { Query($3)           }
 
 args_opt:
     /* nothing */ { [] }
@@ -119,3 +125,4 @@ args_opt:
 args_list:
     expr                    { [$1] }
   | args_list COMMA expr { $3 :: $1 }
+

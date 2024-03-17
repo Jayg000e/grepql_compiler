@@ -13,6 +13,7 @@ and sx =
   | SUnop of uop * sexpr
   | SAssign of string * sexpr
   | SCall of string * sexpr list
+  | Squery of sexpr
   | SNoexpr
 
 type sstmt =
@@ -49,8 +50,11 @@ let rec string_of_sexpr (t, e) =
   | SAssign(v, e) -> v ^ " = " ^ string_of_sexpr e
   | SCall(f, el) ->
       f ^ "(" ^ String.concat ", " (List.map string_of_sexpr el) ^ ")"
+  | Squery(e) ->
+      "SELECT " ^ "FROM " ^ string_of_sexpr e
   | SNoexpr -> ""
-				  ) ^ ")"				     
+				  ) ^ ")"				 
+        
 
 let rec string_of_sstmt = function
     SBlock(stmts) ->
