@@ -1,7 +1,7 @@
 {
   open Microcparse
 
-  (* let print_token token =
+  let print_token token =
     print_endline (match token with
       | LPAREN -> "LPAREN"
       | RPAREN -> "RPAREN"
@@ -25,6 +25,11 @@
       | NOT -> "NOT"
       | SELECT -> "SELECT"
       | FROM -> "FROM"
+      | WHERE -> "WHERE"
+      | DATE -> "DATE"
+      | SIZE -> "SIZE"
+      | GREATER -> "GREATER"
+      | THAN -> "THAN"
       | IF -> "IF"
       | ELSE -> "ELSE"
       | FOR -> "FOR"
@@ -44,8 +49,8 @@
       | EOF -> "EOF"
       | _ -> "Other"
     );
-    token *)
-  let print_token token = token
+    token
+  (* let print_token token = token *)
 }
 
 let digit = ['0' - '9']
@@ -77,6 +82,11 @@ rule token = parse
 | "!"      { print_token NOT }
 | "SELECT" { print_token SELECT}
 | "FROM"   { print_token FROM}
+| "WHERE" { print_token WHERE}
+| "DATE"   { print_token DATE}
+| "SIZE"    { print_token SIZE}
+| "GREATER"   { print_token GREATER}
+| "THAN"    {print_token THAN}
 | "if"     { print_token IF }
 | "else"   { print_token ELSE }
 | "for"    { print_token FOR }

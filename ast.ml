@@ -9,7 +9,13 @@ type typ = Int | Bool | Float | Void | String | Strings
 
 type bind = typ * string
 
-type expr =
+type comparison_op = Cmp of int
+
+and condition =
+  | FileSizeCondition of comparison_op * expr
+  | DateCondition of comparison_op * expr
+
+and expr =
     Literal of int
   | Fliteral of string
   | BoolLit of bool
@@ -19,7 +25,7 @@ type expr =
   | Unop of uop * expr
   | Assign of string * expr
   | Call of string * expr list
-  | Query of expr
+  | Query of expr * condition option
   | Noexpr
 
 type stmt =
@@ -73,9 +79,19 @@ let rec string_of_expr = function
   | Assign(v, e) -> v ^ " = " ^ string_of_expr e
   | Call(f, el) ->
       f ^ "(" ^ String.concat ", " (List.map string_of_expr el) ^ ")"
-  | Query(e) -> 
-      "SELECT " ^ "FROM " ^ string_of_expr e
+  | Query(e, cond_opt) -> 
+    "SELECT * FROM " ^ string_of_expr e ^ (match cond_opt with 
+                                            | None -> "" 
+                                            | Some(cond) -> " WHERE " ^ string_of_condition cond)
   | Noexpr -> ""
+
+and string_of_condition = function
+| FileSizeCondition(op, e) -> "SIZE " ^ string_of_comparison_op op ^ " " ^ string_of_expr e
+| DateCondition(op, e) -> "DATE " ^ string_of_comparison_op op ^ " " ^ string_of_expr e
+
+and string_of_comparison_op = function
+  | Cmp(1) -> "GREATER THAN"
+  | _ -> "UNKNOWN COMPARISON"
 
 let rec string_of_stmt = function
     Block(stmts) ->
