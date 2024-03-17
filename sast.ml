@@ -2,7 +2,10 @@
 
 open Ast
 
-type sexpr = typ * sx
+type scondition = 
+| SFileSizeCondition of comparison_op * sexpr
+| SDateCondition of comparison_op * sexpr
+and sexpr = typ * sx
 and sx =
     SLiteral of int
   | SFliteral of string
@@ -13,7 +16,7 @@ and sx =
   | SUnop of uop * sexpr
   | SAssign of string * sexpr
   | SCall of string * sexpr list
-  | Squery of sexpr
+  | SQuery of sexpr * scondition option
   | SNoexpr
 
 type sstmt =
@@ -50,11 +53,14 @@ let rec string_of_sexpr (t, e) =
   | SAssign(v, e) -> v ^ " = " ^ string_of_sexpr e
   | SCall(f, el) ->
       f ^ "(" ^ String.concat ", " (List.map string_of_sexpr el) ^ ")"
-  | Squery(e) ->
-      "SELECT " ^ "FROM " ^ string_of_sexpr e
-  | SNoexpr -> ""
-				  ) ^ ")"				 
-        
+  | SNoexpr -> ""			 
+  | SQuery(e, None) -> "SELECT * FROM " ^ string_of_sexpr e
+  | SQuery(e, Some(cond)) -> 
+      "SELECT * FROM " ^ string_of_sexpr e ^ " WHERE " ^ string_of_scondition cond ^ ")"
+      ) ^ ")"	
+and string_of_scondition = function
+  | SFileSizeCondition(op, e) -> "SIZE " ^ string_of_comparison_op op ^ " " ^ string_of_sexpr e
+  | SDateCondition(op, e) -> "DATE " ^ string_of_comparison_op op ^ " " ^ string_of_sexpr e
 
 let rec string_of_sstmt = function
     SBlock(stmts) ->

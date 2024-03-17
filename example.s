@@ -6,9 +6,15 @@
 main:                                   # @main
 	.cfi_startproc
 # %bb.0:                                # %entry
-	pushq	%rax
-	.cfi_def_cfa_offset 16
+	subq	$24, %rsp
+	.cfi_def_cfa_offset 32
 	leaq	.Ltmp(%rip), %rdi
+	movq	%rdi, 16(%rsp)
+	leaq	.Ltmp.3(%rip), %r8
+	movq	%r8, 8(%rsp)
+	movl	$2, %esi
+	movl	$1, %edx
+	xorl	%ecx, %ecx
 	callq	query@PLT
 	movq	%rax, (%rsp)
 	movq	%rax, %rdi
@@ -20,7 +26,7 @@ main:                                   # @main
 	movq	(%rsp), %rdi
 	callq	show@PLT
 	xorl	%eax, %eax
-	popq	%rcx
+	addq	$24, %rsp
 	.cfi_def_cfa_offset 8
 	retq
 .Lfunc_end0:
@@ -47,5 +53,10 @@ main:                                   # @main
 .Ltmp:
 	.asciz	"."
 	.size	.Ltmp, 2
+
+	.type	.Ltmp.3,@object         # @tmp.3
+.Ltmp.3:
+	.asciz	"2024-03-16"
+	.size	.Ltmp.3, 11
 
 	.section	".note.GNU-stack","",@progbits

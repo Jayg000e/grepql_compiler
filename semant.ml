@@ -154,24 +154,29 @@ let check (globals, functions) =
           in 
           let args' = List.map2 check_call fd.formals args
           in (fd.typ, SCall(fname, args'))
-      | Query(e) -> 
-          let check_string_expr e = 
-            let (t', e') = expr e
-            and err = "expected String expression in " ^ string_of_expr e
-            in if t' != String then raise (Failure err) else (Strings, Squery((t', e'))) 
-          in
-          check_string_expr e
+      | Query(e, cond_opt) ->  (Strings, SQuery(check_string_expr e, check_cond cond_opt))
+    and check_cond = function
+    | None -> None
+    | Some(FileSizeCondition(cmp, e)) ->
+        Some(SFileSizeCondition(cmp, check_int_expr e))
+    | Some(DateCondition(cmp, e)) ->
+        Some(SDateCondition(cmp, check_string_expr e))
+    | _ -> raise (Failure "Unsupported or invalid condition")
 
-    in
-    let check_bool_expr e = 
+    and check_int_expr e = 
+      let (t', e') = expr e
+      and err = "expected Int expression in " ^ string_of_expr e
+      in if t' != Int then raise (Failure err) else (t', e')
+
+    and check_string_expr e = 
+      let (t', e') = expr e
+      and err = "expected String expression in " ^ string_of_expr e
+      in if t' != String then raise (Failure err) else (t', e')
+    and check_bool_expr e = 
       let (t', e') = expr e
       and err = "expected Boolean expression in " ^ string_of_expr e
       in if t' != Bool then raise (Failure err) else (t', e') 
     in
-
-    
-
-    
 
     (* Return a semantically-checked statement i.e. containing sexprs *)
     let rec check_stmt = function

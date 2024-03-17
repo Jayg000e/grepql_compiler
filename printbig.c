@@ -7,6 +7,9 @@
 #include <stdbool.h>
 #include <string.h>
 #include <dirent.h>     // For directory manipulation
+#include <sys/stat.h>
+#include <time.h>
+#include <limits.h>
 
 /*
  * Font information: one byte per row, 8 rows per character
@@ -156,14 +159,26 @@ char* expandPath(const char* path) {
     return strdup(path);
 }
 
-Strings* query(const char* dirPath) {
+
+
+typedef enum {
+    NoCondition,
+    SizeCondition,
+    DateCondition
+} ConditionType;
+
+typedef enum {
+    LessThan,
+    GreaterThan
+} OpType;
+
+Strings* query(const char* dirPath, ConditionType condition, OpType opType, int sizeCondition, const char* dateCondition) {
     DIR* dir = opendir(dirPath);
     if (dir == NULL) {
         perror("Failed to open directory");
         return NULL;
     }
 
-    struct dirent* entry;
     Strings* fileList = newStrings();
     if (fileList == NULL) {
         closedir(dir);
@@ -171,16 +186,50 @@ Strings* query(const char* dirPath) {
         return NULL;
     }
 
+    struct dirent* entry;
+    struct stat fileInfo;
+    time_t dateConditionTimestamp = 0;
+
+    // If there's a date condition, convert dateCondition to a timestamp
+    if (condition == DateCondition) {
+        struct tm tm;
+        memset(&tm, 0, sizeof(struct tm));
+        strptime(dateCondition, "%Y-%m-%d", &tm);  // Date format is YYYY-MM-DD
+        dateConditionTimestamp = mktime(&tm);
+    }
+
     while ((entry = readdir(dir)) != NULL) {
+        // Construct full path to item
+        char fullPath[PATH_MAX];
+        snprintf(fullPath, sizeof(fullPath), "%s/%s", dirPath, entry->d_name);
+
         // Skip "." and ".." entries
-        if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0) {
-            continue;
+        if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0) continue;
+
+        // Get file info
+        if (stat(fullPath, &fileInfo) != 0) continue;  // Skip if cannot access file info
+
+        // Initialize matchesCondition as false
+        int matchesCondition = 0; 
+
+        // Apply conditions based on the type and operation type
+        if (condition == SizeCondition) {
+            if ((opType == LessThan && fileInfo.st_size < sizeCondition) ||
+                (opType == GreaterThan && fileInfo.st_size > sizeCondition)) {
+                matchesCondition = 1;
+            }
+        }
+        else if (condition == DateCondition) {
+            if ((opType == LessThan && difftime(fileInfo.st_mtime, dateConditionTimestamp) < 0) ||
+                (opType == GreaterThan && difftime(fileInfo.st_mtime, dateConditionTimestamp) > 0)) {
+                matchesCondition = 1;
+            }
+        } else if (condition == NoCondition) {
+            matchesCondition = 1;
         }
 
-        // Check if the entry is a regular file
-        if (entry->d_type == DT_REG) {
-            append(fileList, entry->d_name);
-        }
+        // If entry matches the condition, append to list
+        if (matchesCondition) append(fileList, entry->d_name);
     }
 
     closedir(dir);
@@ -203,7 +252,7 @@ Strings* query(const char* dirPath) {
 //   const char* testDir = "/home/jayg/Documents/cs4115/grepql_compiler";
 
 //   // Call the function with the test directory
-//   Strings* files = query(testDir);
+//   Strings* files = query(testDir,2,1,20000,"2024-03-18");
 //   if (files == NULL) {
 //       printf("Test failed: Could not list files in directory '%s'\n", testDir);
 //       return;

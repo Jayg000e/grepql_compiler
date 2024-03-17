@@ -1,7 +1,7 @@
 {
   open Microcparse
 
-  let print_token token =
+  (* let print_token token =
     print_endline (match token with
       | LPAREN -> "LPAREN"
       | RPAREN -> "RPAREN"
@@ -49,8 +49,8 @@
       | EOF -> "EOF"
       | _ -> "Other"
     );
-    token
-  (* let print_token token = token *)
+    token *)
+  let print_token token = token
 }
 
 let digit = ['0' - '9']

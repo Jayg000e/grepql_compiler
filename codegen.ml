@@ -97,7 +97,7 @@ let translate (globals, functions) =
       L.declare_function "show" show_t the_module in
 
   let query_t : L.lltype =
-      L.function_type strings_ptr_t [| i8_ptr_t |] in
+      L.function_type strings_ptr_t [| i8_ptr_t; i32_t; i32_t; i32_t; i8_ptr_t|] in
   let query_func : L.llvalue =
       L.declare_function "query" query_t the_module in
     
@@ -230,8 +230,29 @@ let translate (globals, functions) =
                         A.Void -> ""
                       | _ -> f ^ "_result") in
          L.build_call fdef (Array.of_list llargs) result builder
-      | Squery (e) -> 
-        L.build_call query_func [|(expr builder e)|] "query" builder
+      | SQuery (e, scond) -> 
+        match scond with 
+          None -> 
+            let e_val = expr builder e in 
+            let condition_type_val = L.const_int i32_t 0 in 
+            let op_type_val = L.const_int i32_t 0 in 
+            let size_condition_val = L.const_int i32_t 0 in 
+            let date_condition_val = L.const_pointer_null i8_ptr_t in 
+            L.build_call query_func [| e_val; condition_type_val; op_type_val; size_condition_val; date_condition_val |] "query" builder
+        | Some(SFileSizeCondition(Cmp(op), e')) ->
+            let e_val = expr builder e in 
+            let condition_type_val = L.const_int i32_t 1 in 
+            let op_type_val = L.const_int i32_t op in 
+            let size_condition_val = (expr builder e') in 
+            let date_condition_val = L.const_pointer_null i8_ptr_t in 
+            L.build_call query_func [| e_val; condition_type_val; op_type_val; size_condition_val; date_condition_val |] "query" builder
+        | Some(SDateCondition(Cmp(op), e')) ->
+          let e_val = expr builder e in 
+          let condition_type_val = L.const_int i32_t 2 in 
+          let op_type_val = L.const_int i32_t op in 
+          let size_condition_val = L.const_int i32_t 0 in 
+          let date_condition_val = (expr builder e') in 
+          L.build_call query_func [| e_val; condition_type_val; op_type_val; size_condition_val; date_condition_val |] "query" builder
     in
     
     (* LLVM insists each basic block end with exactly one "terminator" 
