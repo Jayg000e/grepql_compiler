@@ -13,7 +13,7 @@ main:                                   # @main
 	leaq	.Ltmp.3(%rip), %r8
 	movq	%r8, 8(%rsp)
 	movl	$2, %esi
-	movl	$1, %edx
+	movl	$2, %edx
 	xorl	%ecx, %ecx
 	callq	query@PLT
 	movq	%rax, (%rsp)

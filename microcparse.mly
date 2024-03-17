@@ -7,7 +7,7 @@ open Ast
 %token SEMI LPAREN RPAREN LBRACE RBRACE COMMA PLUS MINUS TIMES DIVIDE ASSIGN
 %token NOT EQ NEQ LT LEQ GT GEQ AND OR
 %token RETURN IF ELSE FOR WHILE INT BOOL FLOAT VOID STRINGS STRING 
-%token SELECT FROM WHERE DATE SIZE GREATER THAN 
+%token SELECT FROM WHERE DATE SIZE GREATER LESS THAN EQUAL
 %token <int> LITERAL
 %token <bool> BLIT
 %token <string> ID FLIT
@@ -119,7 +119,9 @@ query:
     SELECT FROM expr opt_where_clause { Query($3, $4) }
 
 comparison_op:
-    GREATER THAN { Cmp(1) }
+    LESS THAN    { Cmp(0) }
+  |  GREATER THAN { Cmp(1) }
+  |  EQUAL { Cmp(2) }
 condition:
     SIZE comparison_op expr { FileSizeCondition($2, $3) }
   | DATE comparison_op expr { DateCondition($2, $3) }

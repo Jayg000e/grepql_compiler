@@ -32,7 +32,7 @@ entry:
   store i8* getelementptr inbounds ([11 x i8], [11 x i8]* @tmp.3, i32 0, i32 0), i8** %t
   %s1 = load i8*, i8** %s
   %t2 = load i8*, i8** %t
-  %query = call { i8**, i32, i32 }* @query(i8* %s1, i32 2, i32 1, i32 0, i8* %t2)
+  %query = call { i8**, i32, i32 }* @query(i8* %s1, i32 2, i32 2, i32 0, i8* %t2)
   store { i8**, i32, i32 }* %query, { i8**, i32, i32 }** %a
   %a3 = load { i8**, i32, i32 }*, { i8**, i32, i32 }** %a
   %size = call i32 @size({ i8**, i32, i32 }* %a3)

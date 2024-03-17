@@ -29,6 +29,8 @@
       | DATE -> "DATE"
       | SIZE -> "SIZE"
       | GREATER -> "GREATER"
+      | LESS -> "LESS"
+      | EQUAL -> "EQUAL"
       | THAN -> "THAN"
       | IF -> "IF"
       | ELSE -> "ELSE"
@@ -86,6 +88,8 @@ rule token = parse
 | "DATE"   { print_token DATE}
 | "SIZE"    { print_token SIZE}
 | "GREATER"   { print_token GREATER}
+| "LESS"   { print_token LESS}
+| "EQUAL"   { print_token EQUAL}
 | "THAN"    {print_token THAN}
 | "if"     { print_token IF }
 | "else"   { print_token ELSE }

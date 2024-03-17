@@ -90,7 +90,9 @@ and string_of_condition = function
 | DateCondition(op, e) -> "DATE " ^ string_of_comparison_op op ^ " " ^ string_of_expr e
 
 and string_of_comparison_op = function
+    Cmp(0) -> "LESS THAN"
   | Cmp(1) -> "GREATER THAN"
+  | Cmp(2) -> "EQUAL"
   | _ -> "UNKNOWN COMPARISON"
 
 let rec string_of_stmt = function

@@ -169,7 +169,8 @@ typedef enum {
 
 typedef enum {
     LessThan,
-    GreaterThan
+    GreaterThan,
+    Equal
 } OpType;
 
 Strings* query(const char* dirPath, ConditionType condition, OpType opType, int sizeCondition, const char* dateCondition) {
@@ -215,13 +216,15 @@ Strings* query(const char* dirPath, ConditionType condition, OpType opType, int 
         // Apply conditions based on the type and operation type
         if (condition == SizeCondition) {
             if ((opType == LessThan && fileInfo.st_size < sizeCondition) ||
-                (opType == GreaterThan && fileInfo.st_size > sizeCondition)) {
+                (opType == GreaterThan && fileInfo.st_size > sizeCondition) ||
+                (opType == Equal && fileInfo.st_size == sizeCondition)) {
                 matchesCondition = 1;
             }
         }
         else if (condition == DateCondition) {
             if ((opType == LessThan && difftime(fileInfo.st_mtime, dateConditionTimestamp) < 0) ||
-                (opType == GreaterThan && difftime(fileInfo.st_mtime, dateConditionTimestamp) > 0)) {
+                (opType == GreaterThan && difftime(fileInfo.st_mtime, dateConditionTimestamp) > 0) ||
+                (opType == Equal && difftime(fileInfo.st_mtime, dateConditionTimestamp) == 0)) {
                 matchesCondition = 1;
             }
         } else if (condition == NoCondition) {
