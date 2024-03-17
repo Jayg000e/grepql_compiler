@@ -10,6 +10,7 @@
 #include <sys/stat.h>
 #include <time.h>
 #include <limits.h>
+#include <regex.h>
 
 /*
  * Font information: one byte per row, 8 rows per character
@@ -173,7 +174,7 @@ typedef enum {
     Equal
 } OpType;
 
-Strings* query(const char* dirPath, ConditionType condition, OpType opType, int sizeCondition, const char* dateCondition) {
+Strings* query(const char* dirPath, ConditionType condition, OpType opType, int sizeCondition, const char* dateCondition , const char* pattern) {
     DIR* dir = opendir(dirPath);
     if (dir == NULL) {
         perror("Failed to open directory");
@@ -185,6 +186,18 @@ Strings* query(const char* dirPath, ConditionType condition, OpType opType, int 
         closedir(dir);
         fprintf(stderr, "Failed to create Strings list\n");
         return NULL;
+    }
+
+    regex_t regex;
+    int regexCompiled = 0;
+    if (pattern != NULL) {
+        if (regcomp(&regex, pattern, REG_EXTENDED | REG_NOSUB) != 0) {
+            fprintf(stderr, "Could not compile regex\n");
+            closedir(dir);
+            freeStrings(fileList); 
+            return NULL;
+        }
+        regexCompiled = 1;
     }
 
     struct dirent* entry;
@@ -209,6 +222,13 @@ Strings* query(const char* dirPath, ConditionType condition, OpType opType, int 
 
         // Get file info
         if (stat(fullPath, &fileInfo) != 0) continue;  // Skip if cannot access file info
+
+        if (regexCompiled) {
+            if (regexec(&regex, entry->d_name, 0, NULL, 0) == 0) {
+                append(fileList, entry->d_name);
+            }
+            continue; // Skip other conditions if regex pattern is provided
+        }
 
         // Initialize matchesCondition as false
         int matchesCondition = 0; 
@@ -235,6 +255,10 @@ Strings* query(const char* dirPath, ConditionType condition, OpType opType, int 
         if (matchesCondition) append(fileList, entry->d_name);
     }
 
+    if (regexCompiled) {
+        regfree(&regex);
+    }
+
     closedir(dir);
     return fileList;
 }
@@ -255,7 +279,7 @@ Strings* query(const char* dirPath, ConditionType condition, OpType opType, int 
 //   const char* testDir = "/home/jayg/Documents/cs4115/grepql_compiler";
 
 //   // Call the function with the test directory
-//   Strings* files = query(testDir,2,1,20000,"2024-03-18");
+//   Strings* files = query(testDir,2,1,20000,"2024-03-18","^sast.*");
 //   if (files == NULL) {
 //       printf("Test failed: Could not list files in directory '%s'\n", testDir);
 //       return;

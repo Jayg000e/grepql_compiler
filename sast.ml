@@ -5,6 +5,7 @@ open Ast
 type scondition = 
 | SFileSizeCondition of comparison_op * sexpr
 | SDateCondition of comparison_op * sexpr
+| SRegxCondition of sexpr
 and sexpr = typ * sx
 and sx =
     SLiteral of int
@@ -61,6 +62,7 @@ let rec string_of_sexpr (t, e) =
 and string_of_scondition = function
   | SFileSizeCondition(op, e) -> "SIZE " ^ string_of_comparison_op op ^ " " ^ string_of_sexpr e
   | SDateCondition(op, e) -> "DATE " ^ string_of_comparison_op op ^ " " ^ string_of_sexpr e
+  | SRegxCondition(e) -> "LIKE " ^ string_of_sexpr e
 
 let rec string_of_sstmt = function
     SBlock(stmts) ->

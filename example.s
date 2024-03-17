@@ -9,21 +9,27 @@ main:                                   # @main
 	subq	$24, %rsp
 	.cfi_def_cfa_offset 32
 	leaq	.Ltmp(%rip), %rdi
-	movq	%rdi, 16(%rsp)
-	leaq	.Ltmp.3(%rip), %r8
-	movq	%r8, 8(%rsp)
-	movl	$2, %esi
-	movl	$2, %edx
+	movq	%rdi, 8(%rsp)
+	leaq	.Ltmp.3(%rip), %r9
+	movq	%r9, (%rsp)
+	xorl	%esi, %esi
+	xorl	%edx, %edx
 	xorl	%ecx, %ecx
+	xorl	%r8d, %r8d
 	callq	query@PLT
-	movq	%rax, (%rsp)
+	movq	%rax, 16(%rsp)
 	movq	%rax, %rdi
-	callq	size@PLT
-	leaq	.Lfmt(%rip), %rdi
-	movl	%eax, %esi
-	xorl	%eax, %eax
-	callq	printf@PLT
-	movq	(%rsp), %rdi
+	callq	show@PLT
+	leaq	.Ltmp.4(%rip), %r9
+	movq	%r9, (%rsp)
+	movq	8(%rsp), %rdi
+	xorl	%esi, %esi
+	xorl	%edx, %edx
+	xorl	%ecx, %ecx
+	xorl	%r8d, %r8d
+	callq	query@PLT
+	movq	%rax, 16(%rsp)
+	movq	%rax, %rdi
 	callq	show@PLT
 	xorl	%eax, %eax
 	addq	$24, %rsp
@@ -56,7 +62,12 @@ main:                                   # @main
 
 	.type	.Ltmp.3,@object         # @tmp.3
 .Ltmp.3:
-	.asciz	"2024-03-16"
-	.size	.Ltmp.3, 11
+	.asciz	"^sast.*"
+	.size	.Ltmp.3, 8
+
+	.type	.Ltmp.4,@object         # @tmp.4
+.Ltmp.4:
+	.asciz	".*\\.c$"
+	.size	.Ltmp.4, 7
 
 	.section	".note.GNU-stack","",@progbits

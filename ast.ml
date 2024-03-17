@@ -14,7 +14,7 @@ type comparison_op = Cmp of int
 and condition =
   | FileSizeCondition of comparison_op * expr
   | DateCondition of comparison_op * expr
-
+  | RegxCondition of expr
 and expr =
     Literal of int
   | Fliteral of string
@@ -88,6 +88,7 @@ let rec string_of_expr = function
 and string_of_condition = function
 | FileSizeCondition(op, e) -> "SIZE " ^ string_of_comparison_op op ^ " " ^ string_of_expr e
 | DateCondition(op, e) -> "DATE " ^ string_of_comparison_op op ^ " " ^ string_of_expr e
+| RegxCondition(e) -> "LIKE " ^ string_of_expr e
 
 and string_of_comparison_op = function
     Cmp(0) -> "LESS THAN"

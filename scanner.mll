@@ -31,6 +31,7 @@
       | GREATER -> "GREATER"
       | LESS -> "LESS"
       | EQUAL -> "EQUAL"
+      | LIKE -> "LIKE"
       | THAN -> "THAN"
       | IF -> "IF"
       | ELSE -> "ELSE"
@@ -90,6 +91,7 @@ rule token = parse
 | "GREATER"   { print_token GREATER}
 | "LESS"   { print_token LESS}
 | "EQUAL"   { print_token EQUAL}
+| "LIKE"   { print_token LIKE}
 | "THAN"    {print_token THAN}
 | "if"     { print_token IF }
 | "else"   { print_token ELSE }
