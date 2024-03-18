@@ -1,7 +1,6 @@
 {
   open Parse
-
-  (* let print_token token =
+  let print_token_verbose token =
     print_endline (match token with
       | LPAREN -> "LPAREN"
       | RPAREN -> "RPAREN"
@@ -52,9 +51,14 @@
       | EOF -> "EOF"
       | _ -> "Other"
     );
-    token *)
-  let print_token token = token
+    token 
+  let print_token_quiet token = token 
+  (* Use print_token_verbose when testing scanner. Make sure it is quiet before running make compiler*)
+  let print_token = print_token_quiet
 }
+
+
+
 
 let digit = ['0' - '9']
 let digits = digit+
