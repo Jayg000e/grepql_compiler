@@ -49,7 +49,6 @@
       | ID(id) -> "ID(" ^ id ^ ")"
       | STRLIT(s) -> "STRLIT(" ^ s ^ ")"
       | EOF -> "EOF"
-      | _ -> "Other"
     );
     token 
   let print_token_quiet token = token 

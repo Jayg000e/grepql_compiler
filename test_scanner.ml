@@ -1,6 +1,6 @@
 let rec read_all_tokens lexbuf =
   match Scanner.token lexbuf with
-  | EOF -> () (* End of input, stop the recursion *)
+  | Parse.EOF -> () (* End of input, stop the recursion *)
   | _ -> read_all_tokens lexbuf (* Read the next token *)
 
 let _ =
