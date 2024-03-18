@@ -3,8 +3,8 @@
 open Ast
 
 type scondition = 
-| SFileSizeCondition of comparison_op * sexpr
-| SDateCondition of comparison_op * sexpr
+| SFileSizeCondition of int * sexpr
+| SDateCondition of int * sexpr
 | SRegxCondition of sexpr
 and sexpr = typ * sx
 and sx =

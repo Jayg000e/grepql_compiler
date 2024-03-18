@@ -119,9 +119,9 @@ query:
     SELECT FROM expr opt_where_clause { Query($3, $4) }
 
 comparison_op:
-    LESS THAN    { Cmp(0) }
-  |  GREATER THAN { Cmp(1) }
-  |  EQUAL { Cmp(2) }
+    LESS THAN     { 0 }
+  |  GREATER THAN { 1 }
+  |  EQUAL        { 2 }
 condition:
     SIZE comparison_op expr { FileSizeCondition($2, $3) }
   | DATE comparison_op expr { DateCondition($2, $3)     }

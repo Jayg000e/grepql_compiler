@@ -9,11 +9,9 @@ type typ = Int | Bool | Float | Void | String | Strings
 
 type bind = typ * string
 
-type comparison_op = Cmp of int
-
-and condition =
-  | FileSizeCondition of comparison_op * expr
-  | DateCondition of comparison_op * expr
+type condition =
+  | FileSizeCondition of int * expr
+  | DateCondition of int * expr
   | RegxCondition of expr
 and expr =
     Literal of int
@@ -91,9 +89,9 @@ and string_of_condition = function
 | RegxCondition(e) -> "LIKE " ^ string_of_expr e
 
 and string_of_comparison_op = function
-    Cmp(0) -> "LESS THAN"
-  | Cmp(1) -> "GREATER THAN"
-  | Cmp(2) -> "EQUAL"
+    0 -> "LESS THAN"
+  | 1 -> "GREATER THAN"
+  | 2 -> "EQUAL"
   | _ -> "UNKNOWN COMPARISON"
 
 let rec string_of_stmt = function

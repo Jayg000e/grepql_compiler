@@ -33,7 +33,6 @@ let translate (globals, functions) =
   and float_t    = L.double_type context
   and void_t     = L.void_type   context in
   let i8_ptr_t   = L.pointer_type i8_t in
-  let void_ptr_t = L.pointer_type i8_t in  (* C's void* as LLVM's i8* *)
   let i8_ptr_ptr_t   = L.pointer_type i8_ptr_t in
 
   (* Defining the struct in LLVM to match the C structure, including the enum as i32 *)
@@ -64,11 +63,6 @@ let translate (globals, functions) =
       L.var_arg_function_type i32_t [| L.pointer_type i8_t |] in
   let printf_func : L.llvalue = 
       L.declare_function "printf" printf_t the_module in
-
-  let printbig_t : L.lltype =
-      L.function_type i32_t [| i32_t |] in
-  let printbig_func : L.llvalue =
-      L.declare_function "printbig" printbig_t the_module in
   
   let concat_t : L.lltype = 
       L.function_type i8_ptr_t [|i8_ptr_t; i8_ptr_t|] in
@@ -203,8 +197,6 @@ let translate (globals, functions) =
       | SCall ("print", [e]) | SCall ("printb", [e]) ->
 	  L.build_call printf_func [| int_format_str ; (expr builder e) |]
 	    "printf" builder
-      | SCall ("printbig", [e]) ->
-	  L.build_call printbig_func [| (expr builder e) |] "printbig" builder
       | SCall ("concat", [e1; e2]) ->
     L.build_call concat_func [| (expr builder e1); (expr builder e2)|] "concat" builder
     | SCall ("newStrings", []) ->
@@ -239,7 +231,7 @@ let translate (globals, functions) =
             let date_condition_val = L.const_pointer_null i8_ptr_t in 
             let reg_condition_val = L.const_pointer_null i8_ptr_t in 
             L.build_call query_func [| e_val; condition_type_val; op_type_val; size_condition_val; date_condition_val; reg_condition_val|] "query" builder
-        | Some(SFileSizeCondition(Cmp(op), e')) ->
+        | Some(SFileSizeCondition(op, e')) ->
             let e_val = expr builder e in 
             let condition_type_val = L.const_int i32_t 1 in 
             let op_type_val = L.const_int i32_t op in 
@@ -247,7 +239,7 @@ let translate (globals, functions) =
             let date_condition_val = L.const_pointer_null i8_ptr_t in 
             let reg_condition_val = L.const_pointer_null i8_ptr_t in 
             L.build_call query_func [| e_val; condition_type_val; op_type_val; size_condition_val; date_condition_val; reg_condition_val|] "query" builder
-        | Some(SDateCondition(Cmp(op), e')) ->
+        | Some(SDateCondition(op, e')) ->
           let e_val = expr builder e in 
           let condition_type_val = L.const_int i32_t 2 in 
           let op_type_val = L.const_int i32_t op in 

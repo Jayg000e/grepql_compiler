@@ -44,7 +44,6 @@ let check (globals, functions) =
         ("printb", [Bool], Void);
         ("printf", [Float], Void);
         ("prints", [String], Void);
-        ("printbig", [Int], Void);
         ("concat", [String; String], String); (* Here's the new function *)
         ("newStrings", [], Strings);
         ("append", [Strings; String], Void);
