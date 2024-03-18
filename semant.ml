@@ -163,7 +163,6 @@ let check (globals, functions) =
         Some(SDateCondition(cmp, check_string_expr e))
     | Some(RegxCondition(e)) ->
           Some(SRegxCondition(check_string_expr e))
-    | _ -> raise (Failure "Unsupported or invalid condition")
 
     and check_int_expr e = 
       let (t', e') = expr e

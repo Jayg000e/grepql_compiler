@@ -1,5 +1,5 @@
 {
-  open Microcparse
+  open Parse
 
   (* let print_token token =
     print_endline (match token with

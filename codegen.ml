@@ -34,7 +34,6 @@ let translate (globals, functions) =
   and void_t     = L.void_type   context in
   let i8_ptr_t   = L.pointer_type i8_t in
   let void_ptr_t = L.pointer_type i8_t in  (* C's void* as LLVM's i8* *)
-  let void_ptr_ptr_t = L.pointer_type void_ptr_t in  (* C's void** as LLVM's i8** *)
   let i8_ptr_ptr_t   = L.pointer_type i8_ptr_t in
 
   (* Defining the struct in LLVM to match the C structure, including the enum as i32 *)

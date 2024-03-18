@@ -265,24 +265,19 @@ Strings* query(const char* dirPath, ConditionType condition, OpType opType, int 
 
 
 
-// #ifdef BUILD_TEST
-// int main()
-// {
-//   char s[] = "HELLO WORLD09AZ";
-//   char *c;
-//   for ( c = s ; *c ; c++) printbig(*c);
-// }
-// #endif
+#ifdef BUILD_TEST
+int main()
+{
+  const char* testDir = "/home/jayg/Documents/cs4115/grepql_compiler";
 
-// int main()
-// {
-//   const char* testDir = "/home/jayg/Documents/cs4115/grepql_compiler";
+  // Call the function with the test directory
+  Strings* files = query(testDir,2,1,20000,"2024-03-18","^sast.*");
+  if (files == NULL) {
+      printf("Test failed: Could not list files in directory '%s'\n", testDir);
+      return;
+  }
+  show(files);
+}
+#endif
 
-//   // Call the function with the test directory
-//   Strings* files = query(testDir,2,1,20000,"2024-03-18","^sast.*");
-//   if (files == NULL) {
-//       printf("Test failed: Could not list files in directory '%s'\n", testDir);
-//       return;
-//   }
-//   show(files);
-// }
+
