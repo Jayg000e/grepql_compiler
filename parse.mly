@@ -17,7 +17,8 @@ open Ast
 %start program
 %type <Ast.program> program
 
-%nonassoc NOELSE
+%nonassoc SELECT FROM WHERE DATE SIZE GREATER LESS THAN EQUAL LIKE STRLIT STRINGS STRING 
+%nonassoc NOELSE 
 %nonassoc ELSE
 %right ASSIGN
 %left OR
@@ -27,6 +28,7 @@ open Ast
 %left PLUS MINUS
 %left TIMES DIVIDE
 %right NOT
+
 
 %%
 
