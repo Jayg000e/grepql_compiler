@@ -7,7 +7,7 @@ open Ast
 %token SEMI LPAREN RPAREN LBRACE RBRACE COMMA PLUS MINUS TIMES DIVIDE ASSIGN
 %token NOT EQ NEQ LT LEQ GT GEQ AND OR
 %token RETURN IF ELSE FOR WHILE INT BOOL FLOAT VOID STRINGS STRING 
-%token SELECT FROM WHERE DATE SIZE GREATER LESS THAN EQUAL LIKE
+%token SELECT GREP FROM WHERE DATE SIZE GREATER LESS THAN EQUAL LIKE
 %token <int> LITERAL
 %token <bool> BLIT
 %token <string> ID FLIT
@@ -17,7 +17,7 @@ open Ast
 %start program
 %type <Ast.program> program
 
-%nonassoc SELECT FROM WHERE DATE SIZE GREATER LESS THAN EQUAL LIKE STRLIT STRINGS STRING 
+%nonassoc SELECT GREP FROM WHERE DATE SIZE GREATER LESS THAN EQUAL LIKE STRLIT STRINGS STRING 
 %nonassoc NOELSE 
 %nonassoc ELSE
 %right ASSIGN
@@ -115,10 +115,13 @@ expr:
   | ID LPAREN args_opt RPAREN { Call($1, $3)  }
   | LPAREN expr RPAREN { $2                   }
   | query             { $1 }
+  | grep              { $1 }
 
 
 query:
     SELECT FROM expr opt_where_clause { Query($3, $4) }
+grep:
+    GREP expr FROM expr {Grep($2, $4)}
 
 comparison_op:
     LESS THAN     { 0 }

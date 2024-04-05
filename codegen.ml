@@ -93,7 +93,12 @@ let translate (globals, functions) =
       L.function_type strings_ptr_t [| i8_ptr_t; i32_t; i32_t; i32_t; i8_ptr_t; i8_ptr_t|] in
   let query_func : L.llvalue =
       L.declare_function "query" query_t the_module in
-    
+
+  let grep_t : L.lltype =
+        L.function_type strings_ptr_t [| i8_ptr_t; i8_ptr_t|] in
+  let grep_func : L.llvalue =
+      L.declare_function "searchPath" grep_t the_module in
+  
   (* Define each function (arguments and return type) so we can 
      call it even before we've created its body *)
   let function_decls : (L.llvalue * sfunc_decl) StringMap.t =
@@ -221,6 +226,8 @@ let translate (globals, functions) =
                         A.Void -> ""
                       | _ -> f ^ "_result") in
          L.build_call fdef (Array.of_list llargs) result builder
+      | SGrep (e1, e2) -> 
+        L.build_call grep_func [| (expr builder e1); (expr builder e2)|] "grep" builder
       | SQuery (e, scond) -> 
         match scond with 
           None -> 

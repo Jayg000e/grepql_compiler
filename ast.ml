@@ -24,6 +24,7 @@ and expr =
   | Assign of string * expr
   | Call of string * expr list
   | Query of expr * condition option
+  | Grep of expr * expr
   | Noexpr
 
 type stmt =
@@ -81,6 +82,8 @@ let rec string_of_expr = function
     "SELECT * FROM " ^ string_of_expr e ^ (match cond_opt with 
                                             | None -> "" 
                                             | Some(cond) -> " WHERE " ^ string_of_condition cond)
+  | Grep(e1, e2) -> 
+    "GREP " ^ string_of_expr e1 ^ " FROM " ^ string_of_expr e2
   | Noexpr -> ""
 
 and string_of_condition = function

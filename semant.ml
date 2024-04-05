@@ -153,6 +153,7 @@ let check (globals, functions) =
           in 
           let args' = List.map2 check_call fd.formals args
           in (fd.typ, SCall(fname, args'))
+      | Grep(e1, e2) -> (Strings, SGrep(check_string_expr e1, check_string_expr e2))
       | Query(e, cond_opt) ->  (Strings, SQuery(check_string_expr e, check_cond cond_opt))
     and check_cond = function
     | None -> None
@@ -162,6 +163,8 @@ let check (globals, functions) =
         Some(SDateCondition(cmp, check_string_expr e))
     | Some(RegxCondition(e)) ->
           Some(SRegxCondition(check_string_expr e))
+
+     
 
     and check_int_expr e = 
       let (t', e') = expr e

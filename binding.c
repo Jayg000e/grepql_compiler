@@ -200,20 +200,102 @@ Strings* query(const char* dirPath, ConditionType condition, OpType opType, int 
     return fileList;
 }
 
+Strings* searchFile(const char *pattern, const char *filename) {
+    Strings* results = newStrings();
+    FILE *fp;
+    char line[1024];
+    regex_t regex;
+    int reti;
+
+    reti = regcomp(&regex, pattern, REG_EXTENDED);
+    if (reti) {
+        fprintf(stderr, "Could not compile regex\n");
+        freeStrings(results);
+        return NULL;
+    }
+
+    fp = fopen(filename, "r");
+    if (fp == NULL) {
+        perror("Error opening file");
+        freeStrings(results);
+        return NULL;
+    }
+
+    while (fgets(line, sizeof(line), fp) != NULL) {
+        line[strcspn(line, "\n")] = 0;
+        reti = regexec(&regex, line, 0, NULL, 0);
+        if (!reti) {
+            append(results, line);
+        }
+    }
+
+    fclose(fp);
+    regfree(&regex);
+
+    return results;
+}
+
+Strings* searchPath(const char *pattern, const char *path) {
+    struct stat path_stat;
+    stat(path, &path_stat);
+
+    // Check if path is a directory
+    if (S_ISDIR(path_stat.st_mode)) {
+        Strings* directoryResults = newStrings();
+        DIR *dir;
+        struct dirent *entry;
+
+        if ((dir = opendir(path)) == NULL) {
+            perror("opendir() error");
+            freeStrings(directoryResults);
+            return NULL;
+        }
+
+        while ((entry = readdir(dir)) != NULL) {
+            // Construct full path for each entry
+            char fullPath[1024];
+            snprintf(fullPath, sizeof(fullPath), "%s/%s", path, entry->d_name);
+            
+            // Use stat to determine if it's a regular file
+            struct stat entry_stat;
+            if (stat(fullPath, &entry_stat) == 0) {
+                if (S_ISREG(entry_stat.st_mode)) {
+                    Strings* fileResults = searchFile(pattern, fullPath);
+                    for (int i = 0; i < fileResults->total; i++) {
+                        append(directoryResults, fileResults->items[i]);
+                    }
+                    freeStrings(fileResults);
+                }
+            }
+        }
+
+        closedir(dir);
+
+        return directoryResults;
+    } else {
+        // Path is a file
+        return searchFile(pattern, path);
+    }
+}
+
 
 
 #ifdef BUILD_TEST
-int main()
-{
-  const char* testDir = "/home/jayg/Documents/cs4115/grepql_compiler";
+int main(int argc, char **argv) {
+    if (argc < 3) {
+        fprintf(stderr, "Usage: %s <regex> <path>\n", argv[0]);
+        return 1;
+    }
 
-  // Call the function with the test directory
-  Strings* files = query(testDir,2,1,20000,"2024-03-18","^sast.*");
-  if (files == NULL) {
-      printf("Test failed: Could not list files in directory '%s'\n", testDir);
-      return;
-  }
-  show(files);
+    Strings* results = searchPath(argv[1], argv[2]);
+    if (results) {
+        for (int i = 0; i < results->total; i++) {
+            printf("%s\n", results->items[i]);
+        }
+        freeStrings(results);
+    }
+
+    return 0;
 }
 #endif
 

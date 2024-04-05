@@ -18,6 +18,7 @@ and sx =
   | SAssign of string * sexpr
   | SCall of string * sexpr list
   | SQuery of sexpr * scondition option
+  | SGrep of sexpr * sexpr
   | SNoexpr
 
 type sstmt =
@@ -55,6 +56,8 @@ let rec string_of_sexpr (t, e) =
   | SCall(f, el) ->
       f ^ "(" ^ String.concat ", " (List.map string_of_sexpr el) ^ ")"
   | SNoexpr -> ""			 
+  | SGrep(e1, e2) -> 
+    "GREP " ^ string_of_sexpr e1 ^ " FROM " ^ string_of_sexpr e2
   | SQuery(e, None) -> "SELECT * FROM " ^ string_of_sexpr e
   | SQuery(e, Some(cond)) -> 
       "SELECT * FROM " ^ string_of_sexpr e ^ " WHERE " ^ string_of_scondition cond ^ ")"
