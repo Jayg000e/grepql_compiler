@@ -16,14 +16,14 @@ int main()
   "hello" -> a;
   "world" -> a;
   display_strings_info(a);
-  prints("--------------");
+  
   b = newStrings();
   "good bye" -> b;
   "world" -> b; 
   display_strings_info(b);
-  prints("--------------");
-  CHECK a $ b @ b;
-  prints("--------------");
+  
+  CHECK a $ b @ b
+  
   CHECK a @ b $ b;
   
   return 0;
