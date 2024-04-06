@@ -248,6 +248,7 @@ let translate (globals, functions) =
                         A.Void -> ""
                       | _ -> f ^ "_result") in
          L.build_call fdef (Array.of_list llargs) result builder
+      | SCount(e) -> L.build_call size_func [|expr builder e|] "size" builder
       | SSave (e1, e2) -> L.build_call save_func [|(expr builder e1); (expr builder e2)|] "save" builder
       | SLoad (e) -> L.build_call load_func [|expr builder e|] "load" builder
       | SAppend (e1, e2) -> L.build_call append_func [|(expr builder e2); (expr builder e1)|] "append" builder

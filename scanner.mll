@@ -26,6 +26,7 @@
       | OR -> "OR"
       | NOT -> "NOT"
       | CHECK -> "CHECK"
+      | COUNT -> "COUNT"
       | LOAD -> "LOAD"
       | SAVE -> "SAVE"
       | TO -> "TO"
@@ -97,6 +98,7 @@ rule token = parse
 | "&&"     { print_token AND }
 | "||"     { print_token OR }
 | "!"      { print_token NOT }
+| "COUNT"  {print_token COUNT}
 | "LOAD"   {print_token LOAD}
 | "SAVE"    {print_token SAVE}
 | "TO"      {print_token TO}

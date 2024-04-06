@@ -154,6 +154,7 @@ let check (globals, functions) =
           in 
           let args' = List.map2 check_call fd.formals args
           in (fd.typ, SCall(fname, args'))
+      | Count(e) -> (Int, SCount(check_strings_expr e))
       | Save(e1, e2) -> (Void, SSave(check_strings_expr e1, check_string_expr e2))
       | Load(e) -> (Strings, SLoad(check_string_expr e))
       | Append(e1, e2) -> (Void, SAppend(check_string_expr e1, check_strings_expr e2))

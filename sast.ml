@@ -17,6 +17,7 @@ and sx =
   | SUnop of uop * sexpr
   | SAssign of string * sexpr
   | SCall of string * sexpr list
+  | SCount of sexpr
   | SSave of sexpr * sexpr
   | SLoad of sexpr
   | SAppend of sexpr * sexpr
@@ -60,6 +61,7 @@ let rec string_of_sexpr (t, e) =
   | SCall(f, el) ->
       f ^ "(" ^ String.concat ", " (List.map string_of_sexpr el) ^ ")"
   | SNoexpr -> ""			 
+  | SCount(e) -> "COUNT " ^ string_of_sexpr e 
   | SSave(e1, e2) -> "SAVE " ^ string_of_sexpr e1 ^ " TO " ^ string_of_sexpr e2 
   | SLoad(e) -> "LOAD " ^ string_of_sexpr e
   | SAppend(e1, e2) -> string_of_sexpr e1 ^ "->" ^ string_of_sexpr e2
