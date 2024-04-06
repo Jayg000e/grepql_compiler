@@ -26,6 +26,9 @@
       | OR -> "OR"
       | NOT -> "NOT"
       | CHECK -> "CHECK"
+      | LOAD -> "LOAD"
+      | SAVE -> "SAVE"
+      | TO -> "TO"
       | SELECT -> "SELECT"
       | GREP -> "GREP"
       | FROM -> "FROM"
@@ -94,6 +97,9 @@ rule token = parse
 | "&&"     { print_token AND }
 | "||"     { print_token OR }
 | "!"      { print_token NOT }
+| "LOAD"   {print_token LOAD}
+| "SAVE"    {print_token SAVE}
+| "TO"      {print_token TO}
 | "SELECT" { print_token SELECT}
 | "GREP" { print_token GREP}
 | "CHECK"   {print_token CHECK}

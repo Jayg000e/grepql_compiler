@@ -17,6 +17,8 @@ and sx =
   | SUnop of uop * sexpr
   | SAssign of string * sexpr
   | SCall of string * sexpr list
+  | SSave of sexpr * sexpr
+  | SLoad of sexpr
   | SAppend of sexpr * sexpr
   | SCheck of sexpr
   | SQuery of sexpr * scondition option
@@ -58,6 +60,8 @@ let rec string_of_sexpr (t, e) =
   | SCall(f, el) ->
       f ^ "(" ^ String.concat ", " (List.map string_of_sexpr el) ^ ")"
   | SNoexpr -> ""			 
+  | SSave(e1, e2) -> "SAVE " ^ string_of_sexpr e1 ^ " TO " ^ string_of_sexpr e2 
+  | SLoad(e) -> "LOAD " ^ string_of_sexpr e
   | SAppend(e1, e2) -> string_of_sexpr e1 ^ "->" ^ string_of_sexpr e2
   | SCheck(e) -> "CHECK " ^ string_of_sexpr e 
   | SGrep(e1, e2) -> 

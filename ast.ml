@@ -26,6 +26,8 @@ and expr =
   | Query of expr * condition option
   | Grep of expr * expr
   | Check of expr
+  | Save of expr * expr
+  | Load of expr
   | Append of expr * expr
   | Noexpr
 
@@ -88,6 +90,10 @@ let rec string_of_expr = function
                                             | Some(cond) -> " WHERE " ^ string_of_condition cond)
   | Grep(e1, e2) -> 
     "GREP " ^ string_of_expr e1 ^ " FROM " ^ string_of_expr e2
+  | Save(e1, e2) -> 
+    "SAVE " ^ string_of_expr e1 ^ " TO " ^ string_of_expr e2
+  | Load(e) -> 
+    "LOAD " ^ string_of_expr e 
   | Check(e) -> "CHECK " ^ string_of_expr e
   | Append(e1, e2) -> string_of_expr e1 ^ "->" ^ string_of_expr e2
   | Noexpr -> ""

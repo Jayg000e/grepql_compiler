@@ -108,6 +108,16 @@ let translate (globals, functions) =
         L.function_type strings_ptr_t [| strings_ptr_t; strings_ptr_t|] in
   let intersect_func : L.llvalue =
       L.declare_function "intersectStrings" intersect_t the_module in
+  
+  let save_t : L.lltype =
+        L.function_type i32_t [| strings_ptr_t; i8_ptr_t|] in
+  let save_func : L.llvalue =
+        L.declare_function "writeStrings" save_t the_module in
+
+  let load_t : L.lltype =
+    L.function_type strings_ptr_t [|i8_ptr_t|] in
+  let load_func : L.llvalue =
+        L.declare_function "readStrings" load_t the_module in
 
   (* Define each function (arguments and return type) so we can 
      call it even before we've created its body *)
@@ -238,6 +248,8 @@ let translate (globals, functions) =
                         A.Void -> ""
                       | _ -> f ^ "_result") in
          L.build_call fdef (Array.of_list llargs) result builder
+      | SSave (e1, e2) -> L.build_call save_func [|(expr builder e1); (expr builder e2)|] "save" builder
+      | SLoad (e) -> L.build_call load_func [|expr builder e|] "load" builder
       | SAppend (e1, e2) -> L.build_call append_func [|(expr builder e2); (expr builder e1)|] "append" builder
       | SCheck (e) -> 
         L.build_call show_func [|expr builder e|] "check" builder

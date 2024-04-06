@@ -115,6 +115,46 @@ Strings* intersectStrings(const Strings* list1, const Strings* list2) {
     return result;
 }
 
+// Write strings to a file in append mode
+void writeStrings(Strings* input, char* path) {
+    FILE* file = fopen(path, "a");
+    if (file == NULL) {
+        perror("Failed to open file");
+        return;
+    }
+    for (int i = 0; i < input->total; i++) {
+        fprintf(file, "%s\n", input->items[i]);
+    }
+    fclose(file);
+}
+
+Strings* readStrings(char* path) {
+    Strings* list = newStrings(); 
+    if (!list) {
+        fprintf(stderr, "Failed to allocate memory for Strings\n");
+        return NULL;
+    }
+
+    FILE* file = fopen(path, "r"); 
+    if (!file) {
+        perror("Failed to open file");
+        free(list); 
+        return NULL;
+    }
+
+    char buffer[1024]; 
+
+    // Read lines from the file
+    while (fgets(buffer, sizeof(buffer), file)) {
+        buffer[strcspn(buffer, "\n")] = 0;
+        append(list, buffer); // Append the entire line to the list
+    }
+
+    fclose(file); 
+    return list; 
+}
+
+
 char* expandPath(const char* path) {
     if (path[0] == '~') {
         const char* home = getenv("HOME");

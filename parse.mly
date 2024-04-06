@@ -4,7 +4,7 @@
 open Ast
 %}
 
-%token SEMI LPAREN RPAREN LBRACE RBRACE COMMA PLUS MINUS TIMES DIVIDE UNION INTERSECT ASSIGN APPEND
+%token SEMI LPAREN RPAREN LBRACE RBRACE COMMA PLUS MINUS TIMES DIVIDE UNION INTERSECT ASSIGN APPEND SAVE LOAD TO
 %token NOT EQ NEQ LT LEQ GT GEQ AND OR
 %token RETURN IF ELSE FOR WHILE INT BOOL FLOAT VOID STRINGS STRING 
 %token SELECT GREP FROM WHERE DATE SIZE GREATER LESS THAN EQUAL LIKE CHECK
@@ -16,7 +16,8 @@ open Ast
 
 %start program
 %type <Ast.program> program
-%nonassoc CHECK 
+%nonassoc CHECK
+%nonassoc SAVE LOAD TO
 %left UNION INTERSECT
 %nonassoc SELECT GREP FROM WHERE DATE SIZE GREATER LESS THAN EQUAL LIKE STRLIT STRINGS STRING APPEND
 %nonassoc NOELSE 
@@ -120,7 +121,9 @@ expr:
   | query             { $1 }
   | grep              { $1 }
   | CHECK expr          { Check($2)           }
-  | expr APPEND expr    {Append($1, $3)       }
+  | expr APPEND expr    { Append($1, $3)      }
+  | SAVE expr TO expr  {  Save($2, $4)         }
+  | LOAD expr          {Load($2)              }
 
 
 query:
