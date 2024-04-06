@@ -1,13 +1,14 @@
-
+/* the grepql compiler will perform type inference and correct this automatically*/ 
+/* the following can be successfully compiled */ 
+strings add(int x, int y) {
+  return x + y;
+}
 int main()
 { 
-  strings a;
-  string s;
-  string t;
-  s = ".";
-  t = "string_of";
-  a = GREP t FROM s;
-  print(size(a));
-  show(a);
+  int x;
+  int y;
+  x = 1;
+  y = 2;
+  print(x + y);
   return 0;
 }
