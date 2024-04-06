@@ -13,6 +13,7 @@
       | TIMES -> "TIMES"
       | DIVIDE -> "DIVIDE"
       | ASSIGN -> "ASSIGN"
+      | APPEND -> "APPEND"
       | UNION -> "UNION"
       | INTERSECT -> "INTERSECT"
       | EQ -> "EQ"
@@ -75,6 +76,7 @@ rule token = parse
 | '{'      { print_token LBRACE }
 | '}'      { print_token RBRACE }
 | ';'      { print_token SEMI }
+| "->"     { print_token APPEND}
 | ','      { print_token COMMA }
 | '$'      { print_token UNION }
 | '@'      { print_token INTERSECT}

@@ -4,8 +4,9 @@ int main()
   strings a;
 
   a = newStrings();
-  "hello" -> a;
-  "world" -> a;
+  append(a,"hello");
+  append(a,"world");
+
   CHECK a;
   return 0;
 }
