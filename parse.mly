@@ -4,7 +4,7 @@
 open Ast
 %}
 
-%token SEMI LPAREN RPAREN LBRACE RBRACE COMMA PLUS MINUS TIMES DIVIDE ASSIGN
+%token SEMI LPAREN RPAREN LBRACE RBRACE COMMA PLUS MINUS TIMES DIVIDE UNION INTERSECT ASSIGN
 %token NOT EQ NEQ LT LEQ GT GEQ AND OR
 %token RETURN IF ELSE FOR WHILE INT BOOL FLOAT VOID STRINGS STRING 
 %token SELECT GREP FROM WHERE DATE SIZE GREATER LESS THAN EQUAL LIKE
@@ -27,6 +27,7 @@ open Ast
 %left LT GT LEQ GEQ
 %left PLUS MINUS
 %left TIMES DIVIDE
+%left UNION INTERSECT
 %right NOT
 
 
@@ -97,6 +98,8 @@ expr:
   | BLIT             { BoolLit($1)            }
   | STRLIT           { StringLit($1) }
   | ID               { Id($1)                 }
+  | expr UNION expr  { Binop($1, Union,   $3) }
+  | expr INTERSECT expr { Binop($1, Intersect,   $3) }
   | expr PLUS   expr { Binop($1, Add,   $3)   }
   | expr MINUS  expr { Binop($1, Sub,   $3)   }
   | expr TIMES  expr { Binop($1, Mult,  $3)   }

@@ -13,6 +13,8 @@
       | TIMES -> "TIMES"
       | DIVIDE -> "DIVIDE"
       | ASSIGN -> "ASSIGN"
+      | UNION -> "UNION"
+      | INTERSECT -> "INTERSECT"
       | EQ -> "EQ"
       | NEQ -> "NEQ"
       | LT -> "LT"
@@ -73,6 +75,8 @@ rule token = parse
 | '}'      { print_token RBRACE }
 | ';'      { print_token SEMI }
 | ','      { print_token COMMA }
+| '$'      { print_token UNION }
+| '@'      { print_token INTERSECT}
 | '+'      { print_token PLUS }
 | '-'      { print_token MINUS }
 | '*'      { print_token TIMES }

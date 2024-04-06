@@ -78,6 +78,43 @@ void freeStrings(Strings* list) {
     free(list); // Free the structure itself
 }
 
+int contains(const Strings* list, const char* item) {
+    for (int i = 0; i < list->total; i++) {
+        if (strcmp(list->items[i], item) == 0) {
+            return 1;  
+        }
+    }
+    return 0;  
+}
+
+Strings* unionStrings(const Strings* list1, const Strings* list2) {
+    Strings* result = newStrings();
+    if (!result) return NULL;
+
+    for (int i = 0; i < list1->total; i++) {
+        append(result, list1->items[i]);
+    }
+
+    for (int i = 0; i < list2->total; i++) {
+        if (!contains(result, list2->items[i])) {
+            append(result, list2->items[i]);
+        }
+    }
+
+    return result;
+}
+
+Strings* intersectStrings(const Strings* list1, const Strings* list2) {
+    Strings* result = newStrings();
+    if (!result) return NULL;
+    for (int i = 0; i < list1->total; i++) {
+        if (contains(list2, list1->items[i])) {
+            append(result, list1->items[i]);
+        }
+    }
+    return result;
+}
+
 char* expandPath(const char* path) {
     if (path[0] == '~') {
         const char* home = getenv("HOME");
