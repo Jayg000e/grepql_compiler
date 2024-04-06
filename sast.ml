@@ -17,6 +17,7 @@ and sx =
   | SUnop of uop * sexpr
   | SAssign of string * sexpr
   | SCall of string * sexpr list
+  | SCheck of sexpr
   | SQuery of sexpr * scondition option
   | SGrep of sexpr * sexpr
   | SNoexpr
@@ -56,6 +57,7 @@ let rec string_of_sexpr (t, e) =
   | SCall(f, el) ->
       f ^ "(" ^ String.concat ", " (List.map string_of_sexpr el) ^ ")"
   | SNoexpr -> ""			 
+  | SCheck(e) -> "CHECK " ^ string_of_sexpr e 
   | SGrep(e1, e2) -> 
     "GREP " ^ string_of_sexpr e1 ^ " FROM " ^ string_of_sexpr e2
   | SQuery(e, None) -> "SELECT * FROM " ^ string_of_sexpr e
@@ -66,6 +68,7 @@ and string_of_scondition = function
   | SFileSizeCondition(op, e) -> "SIZE " ^ string_of_comparison_op op ^ " " ^ string_of_sexpr e
   | SDateCondition(op, e) -> "DATE " ^ string_of_comparison_op op ^ " " ^ string_of_sexpr e
   | SRegxCondition(e) -> "LIKE " ^ string_of_sexpr e
+
 
 let rec string_of_sstmt = function
     SBlock(stmts) ->

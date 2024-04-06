@@ -24,6 +24,7 @@
       | AND -> "AND"
       | OR -> "OR"
       | NOT -> "NOT"
+      | CHECK -> "CHECK"
       | SELECT -> "SELECT"
       | GREP -> "GREP"
       | FROM -> "FROM"
@@ -93,6 +94,7 @@ rule token = parse
 | "!"      { print_token NOT }
 | "SELECT" { print_token SELECT}
 | "GREP" { print_token GREP}
+| "CHECK"   {print_token CHECK}
 | "FROM"   { print_token FROM}
 | "WHERE" { print_token WHERE}
 | "DATE"   { print_token DATE}

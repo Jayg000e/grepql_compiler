@@ -238,6 +238,8 @@ let translate (globals, functions) =
                         A.Void -> ""
                       | _ -> f ^ "_result") in
          L.build_call fdef (Array.of_list llargs) result builder
+      | SCheck (e) -> 
+        L.build_call show_func [|expr builder e|] "check" builder
       | SGrep (e1, e2) -> 
         L.build_call grep_func [| (expr builder e1); (expr builder e2)|] "grep" builder
       | SQuery (e, scond) -> 

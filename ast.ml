@@ -25,6 +25,7 @@ and expr =
   | Call of string * expr list
   | Query of expr * condition option
   | Grep of expr * expr
+  | Check of expr
   | Noexpr
 
 type stmt =
@@ -86,6 +87,7 @@ let rec string_of_expr = function
                                             | Some(cond) -> " WHERE " ^ string_of_condition cond)
   | Grep(e1, e2) -> 
     "GREP " ^ string_of_expr e1 ^ " FROM " ^ string_of_expr e2
+  | Check(e) -> "CHECK " ^ string_of_expr e
   | Noexpr -> ""
 
 and string_of_condition = function

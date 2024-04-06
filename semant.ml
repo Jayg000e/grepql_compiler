@@ -154,6 +154,7 @@ let check (globals, functions) =
           in 
           let args' = List.map2 check_call fd.formals args
           in (fd.typ, SCall(fname, args'))
+      | Check(e) -> (Void, SCheck(check_strings_expr e))
       | Grep(e1, e2) -> (Strings, SGrep(check_string_expr e1, check_string_expr e2))
       | Query(e, cond_opt) ->  (Strings, SQuery(check_string_expr e, check_cond cond_opt))
     and check_cond = function
@@ -171,6 +172,10 @@ let check (globals, functions) =
       let (t', e') = expr e
       and err = "expected Int expression in " ^ string_of_expr e
       in if t' != Int then raise (Failure err) else (t', e')
+    and check_strings_expr e = 
+      let (t', e') = expr e
+      and err = "expected Strings expression in " ^ string_of_expr e
+      in if t' != Strings then raise (Failure err) else (t', e')
 
     and check_string_expr e = 
       let (t', e') = expr e
