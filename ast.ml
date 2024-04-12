@@ -30,6 +30,7 @@ and expr =
   | Load of expr
   | Append of expr * expr
   | Count of expr
+  | Init of string
   | Noexpr
 
 type stmt =
@@ -95,6 +96,7 @@ let rec string_of_expr = function
     "SAVE " ^ string_of_expr e1 ^ " TO " ^ string_of_expr e2
   | Load(e) -> 
     "LOAD " ^ string_of_expr e 
+  | Init(s) -> "INIT " ^ s
   | Count(e) -> "COUNT " ^ string_of_expr e 
   | Check(e) -> "CHECK " ^ string_of_expr e
   | Append(e1, e2) -> string_of_expr e1 ^ "->" ^ string_of_expr e2

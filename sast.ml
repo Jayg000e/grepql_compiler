@@ -17,6 +17,7 @@ and sx =
   | SUnop of uop * sexpr
   | SAssign of string * sexpr
   | SCall of string * sexpr list
+  | SInit of string
   | SCount of sexpr
   | SSave of sexpr * sexpr
   | SLoad of sexpr
@@ -54,6 +55,7 @@ let rec string_of_sexpr (t, e) =
   | SFliteral(l) -> l
   | SStringLit(s) -> "\"" ^ String.escaped s ^ "\""
   | SId(s) -> s
+  | SInit(s) -> s
   | SBinop(e1, o, e2) ->
       string_of_sexpr e1 ^ " " ^ string_of_op o ^ " " ^ string_of_sexpr e2
   | SUnop(o, e) -> string_of_uop o ^ string_of_sexpr e

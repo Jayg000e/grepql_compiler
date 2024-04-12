@@ -106,6 +106,12 @@ let check (globals, functions) =
       | StringLit l  -> (String, SStringLit l)
       | Noexpr     -> (Void, SNoexpr)
       | Id s       -> (type_of_identifier s, SId s)
+      | Init s     -> let ty = match (type_of_identifier s) with
+          Strings -> Strings
+        | _ -> raise (Failure ("only dynamic strings can be initialized with INIT." ^ 
+                              "illegal INIT on " ^ string_of_typ (type_of_identifier s) ^ " " ^ s))
+        in (ty, SInit s) 
+          
       | Assign(var, e) as ex -> 
           let lt = type_of_identifier var
           and (rt, e') = expr e in
