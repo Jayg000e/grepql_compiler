@@ -22,7 +22,7 @@ int main()
   "world" -> b; 
   display_strings_info(b);
   
-  CHECK a $ b @ b
+  CHECK a $ b @ b;
   
   CHECK a @ b $ b;
   
