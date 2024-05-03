@@ -141,7 +141,17 @@ scanner.mll
 3. Support indexing
 4. Maybe some small feature like array literals?
 
+## Version
 
+```bash
+ocaml -version
+```
+The OCaml toplevel, version 4.08.1
+
+```bash
+llvm-config --version
+```
+10.0.0
 
 
 

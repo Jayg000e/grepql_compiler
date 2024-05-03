@@ -1,11 +1,10 @@
 int main()
 { 
-  string s;
   strings a;
-
-  a = newStrings();
+  INIT a;
   "hello" -> a;
   "world" -> a;
   CHECK a;
+  print(size(a));
   return 0;
 }

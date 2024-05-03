@@ -1,5 +1,5 @@
 int main()
 { 
-  CHECK GREP "string_of" FROM ".";
+  CHECK GREP "GREP" FROM ".";
   return 0;
 }

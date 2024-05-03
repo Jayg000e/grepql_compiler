@@ -1,7 +1,6 @@
 
 int main()
 { 
-  strings a;
   string s;
   string t;
   s = ".";
