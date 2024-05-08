@@ -1,7 +1,5 @@
 int main()
 { 
-  SAVE GREP "string_of" FROM "." TO "result.txt";
-  CHECK LOAD "result.txt";
-  print(COUNT LOAD "result.txt");
+  print(COUNT GREP "string_of" FROM ".");
   return 0;
 }
