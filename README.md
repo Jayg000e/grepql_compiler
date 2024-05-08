@@ -62,7 +62,7 @@ Test cases are located in the `/tests` directory. You can run specific test case
 
 ## Additional Information
 
-- The GREPQL Compiler supports a variety of commands and queries typical to data retrieval and manipulation tasks. Refer to the [GREPQL Command Reference](https://drive.google.com/file/d/10ltsyyzCuSjXZ-eB4PknFGg3zn5YAkVQ/view?usp=sharing) for detailed syntax and examples.
+- The GREPQL Compiler supports a variety of commands and queries typical to data retrieval and manipulation tasks. Refer to the [GREPQL Command Reference](https://drive.google.com/file/d/10ltsyyzCuSjXZ-eB4PknFGg3zn5YAkVQ/view?usp=sharing) and [GREPQL Report](https://drive.google.com/file/d/10lyo40QwWk1if8GRefZOezLSMzml-QCw/view?usp=sharing) for detailed syntax and examples.
 
 
 Thank you for using the GREPQL Compiler. We hope it enhances your data processing tasks efficiently!
