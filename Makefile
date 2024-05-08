@@ -1,37 +1,10 @@
-# The _tags file controls the operation of ocamlbuild, e.g., by including
-# packages, enabling warnings
-#
-# See https://github.com/ocaml/ocamlbuild/blob/master/manual/manual.adoc
-
-
-scanner:
-	rm -f test_scanner.native
-	ocamlbuild test_scanner.native
-	cat example.g | ./test_scanner.native
-
-parser:
-	rm -f test_parser.native
-	ocamlbuild test_parser.native
-	cat example.g | ./test_parser.native
-
-semant:
-	rm -f test_semmant.native
-	ocamlbuild test_semmant.native
-	cat example.g | ./test_semmant.native
-
-binding : binding.c
-	cc -o binding -DBUILD_TEST binding.c 
-
-grepql.native :
-	opam config exec -- \
-	ocamlbuild -use-ocamlfind grepql.native
-
 compiler:
 	ocamlbuild -clean
 	rm -f example.s example.ll example.exe binding.o binding
 
+	@echo "Compiling, please wait..."
 	opam config exec -- \
-	ocamlbuild -use-ocamlfind grepql.native
+	ocamlbuild -use-ocamlfind grepql.native > /dev/null 2>&1
 
 # "make clean" removes all generated files
 .PHONY : clean
@@ -47,6 +20,7 @@ test:
 	llc -relocation-model=pic $(basename $(input)).ll > $(basename $(input)).s
 	gcc -c binding.c
 	cc -o $(basename $(input)).exe $(basename $(input)).s binding.o
+	@echo "The following executable is ready to run..."
 	./$(basename $(input)).exe
 
 # you should run "make compiler" before make all_tests
