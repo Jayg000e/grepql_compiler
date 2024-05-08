@@ -1,45 +1,3 @@
-<!-- # grepql_compiler
-
-## Version
-
-```bash
-ocaml -version
-```
-The OCaml toplevel, version 4.08.1
-
-```bash
-llvm-config --version
-```
-10.0.0
-
-## Test Programs
-
-All tests program are in /tests directory. 
-
-
-## Getting Started
-
-### Generate the compiler
-
-```bash
-make compiler
-```
-
-### To run a specific testcase in /tests/file.
-For example, run the demo2_grep.g.
-```bash
-make test input=demo2_grep.g
-```
-### To run all tests
-```bash
-make all_tests
-``` -->
-
-
-
-
-
-
 # GREPQL Compiler
 
 Welcome to the GREPQL Compiler repository! This document provides instructions on how to set up and use the GREPQL Compiler for compiling and running GREPQL scripts. GREPQL is designed to enhance querying capabilities within file systems using a syntax similar to SQL combined with the power of regular expressions.
@@ -92,6 +50,15 @@ Test cases are located in the `/tests` directory. You can run specific test case
   make all_tests
   ```
   This command will sequentially compile and execute each test script, outputting the results to the console.
+### Run your own grepql program
+
+1. Write your own your_file_name.g file in /tests
+
+2. Compile and run it by:
+
+```bash
+  make test input=your_file_name.g
+  ```
 
 ## Additional Information
 
