@@ -4,14 +4,14 @@ Welcome to the GREPQL Compiler repository! This document provides instructions o
 
 ## Version Requirements
 
-Ensure you have the correct versions of OCaml and LLVM installed to compile and run the GREPQL Compiler:
+Ensure you have the correct versions of opam, ocaml, ocamlbuild and LLVM installed to compile and run the GREPQL Compiler:
 
 - **Opam Version**
   Check the installed version of Opam:
   ```bash
   opam --version
   ```
-  This compiler requires opam version 2.o.5.
+  This compiler requires opam version 2.0.5.
 
 - **OCaml Version**
   Check the installed version of OCaml:
@@ -20,7 +20,7 @@ Ensure you have the correct versions of OCaml and LLVM installed to compile and 
   ```
   This compiler requires OCaml version 4.08.1.
 
-  - **OCamlbuild Version**
+- **OCamlbuild Version**
   Check the installed version of OCamlbuild:
   ```bash
   ocamlbuild --version
