@@ -1,10 +1,12 @@
 # GREPQL Compiler
 
-Welcome to the GREPQL Compiler repository! This document provides instructions on how to set up and use the GREPQL Compiler for compiling and running GREPQL scripts. GREPQL is designed to enhance querying capabilities within file systems using a syntax similar to SQL combined with the power of regular expressions.
+Welcome to the GREPQL Compiler repository! This document provides instructions on how to set up and use the GREPQL Compiler for compiling and running GREPQL scripts. GREPQL is designed to enhance querying capabilities within file systems using a syntax similar to SQL combined with the power of regular expressions. 
 
 ## Version Requirements
 
-Ensure you have the correct versions of opam, ocaml, ocamlbuild and LLVM installed to compile and run the GREPQL Compiler:
+Ensure you have the correct versions of opam, ocaml, ocamlbuild and LLVM installed to compile and run the GREPQL Compiler. The compiler and tests should build and run successfully, provided your system
+meets the version requirements. If you encounter
+any issues, please refer to the demo video for a step-by-step guide.
 
 - **Opam Version**
   Check the installed version of Opam:
@@ -33,6 +35,8 @@ Ensure you have the correct versions of opam, ocaml, ocamlbuild and LLVM install
   llvm-config --version
   ```
   LLVM version 10.0.0 is required.
+
+
 
 ## Getting Started
 
